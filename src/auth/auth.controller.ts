@@ -10,18 +10,18 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  @ApiOperation({ summary: 'Cadastrar novo usuário' })
-  @ApiResponse({ status: 201, description: 'Usuário cadastrado com sucesso' })
-  @ApiResponse({ status: 409, description: 'E-mail já está em uso' })
+  @ApiOperation({ summary: 'Register a new user' })
+  @ApiResponse({ status: 201, description: 'User successfully registered' })
+  @ApiResponse({ status: 409, description: 'Email is already in use' })
   register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
   }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Fazer login no aplicativo' })
-  @ApiResponse({ status: 200, description: 'Login bem-sucedido, retorna o JWT' })
-  @ApiResponse({ status: 401, description: 'Credenciais inválidas' })
+  @ApiOperation({ summary: 'Login user' })
+  @ApiResponse({ status: 200, description: 'Successfully logged in, returns JWT' })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }

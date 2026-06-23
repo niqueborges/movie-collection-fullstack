@@ -12,9 +12,9 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Obter perfil do usuário autenticado' })
-  @ApiResponse({ status: 200, description: 'Perfil retornado com sucesso' })
-  @ApiResponse({ status: 401, description: 'Não autorizado' })
+  @ApiOperation({ summary: 'Get authenticated user profile' })
+  @ApiResponse({ status: 200, description: 'Profile returned successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   getProfile(@Req() req: any) {
     return this.usersService.findById(req.user.id);
   }
@@ -22,9 +22,9 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Patch('me')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Atualizar perfil do usuário' })
-  @ApiResponse({ status: 200, description: 'Perfil atualizado com sucesso' })
-  @ApiResponse({ status: 401, description: 'Não autorizado' })
+  @ApiOperation({ summary: 'Update user profile' })
+  @ApiResponse({ status: 200, description: 'Profile updated successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   updateProfile(@Req() req: any, @Body() dto: UpdateUserDto) {
     return this.usersService.update(req.user.id, dto);
   }

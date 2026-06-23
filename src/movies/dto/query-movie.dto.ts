@@ -14,42 +14,42 @@ export enum SortOrder {
 }
 
 export class QueryMovieDto {
-  @ApiPropertyOptional({ description: 'Número da página', default: 1 })
+  @ApiPropertyOptional({ description: 'Page number', default: 1 })
   @IsOptional()
   @IsInt()
   @Min(1)
   @Transform(({ value }) => parseInt(value, 10))
   page?: number = 1;
 
-  @ApiPropertyOptional({ description: 'Quantidade de itens por página', default: 10 })
+  @ApiPropertyOptional({ description: 'Number of items per page', default: 10 })
   @IsOptional()
   @IsInt()
   @Min(1)
   @Transform(({ value }) => parseInt(value, 10))
   limit?: number = 10;
 
-  @ApiPropertyOptional({ description: 'Buscar por título parcial' })
+  @ApiPropertyOptional({ description: 'Search by partial title' })
   @IsOptional()
   @IsString()
   title?: string;
 
-  @ApiPropertyOptional({ description: 'Filtrar por gênero' })
+  @ApiPropertyOptional({ description: 'Filter by genre' })
   @IsOptional()
   @IsString()
   genre?: string;
 
-  @ApiPropertyOptional({ description: 'Filtrar por ano de lançamento' })
+  @ApiPropertyOptional({ description: 'Filter by release year' })
   @IsOptional()
   @IsInt()
   @Transform(({ value }) => parseInt(value, 10))
   releaseYear?: number;
 
-  @ApiPropertyOptional({ description: 'Ordenar por um campo específico', enum: SortMovieBy })
+  @ApiPropertyOptional({ description: 'Sort by a specific field', enum: SortMovieBy })
   @IsOptional()
   @IsEnum(SortMovieBy)
   sortBy?: SortMovieBy;
 
-  @ApiPropertyOptional({ description: 'Ordem da classificação', enum: SortOrder, default: SortOrder.ASC })
+  @ApiPropertyOptional({ description: 'Sort order', enum: SortOrder, default: SortOrder.ASC })
   @IsOptional()
   @IsEnum(SortOrder)
   order?: SortOrder = SortOrder.ASC;
