@@ -6,12 +6,16 @@ import {
   Param,
   Post,
   Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 
 import { WatchlistService } from './watchlist.service';
 import { CreateWatchlistDto } from './dto/create-watchlist.dto';
 import { PaginationWatchlistDto } from './dto/pagination-watchlist.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('watchlist')
 export class WatchlistController {
   constructor(
@@ -19,21 +23,23 @@ export class WatchlistController {
   ) {}
 
   @Post()
-  addMovie(@Body() body: CreateWatchlistDto) {
-    // Temporário até integrar com Auth
-    const userId = 'temp-user-id';
-
+  addMovie(
+    @Request() req,
+    @Body() body: CreateWatchlistDto,
+  ) {
     return this.watchlistService.addMovie(
-      userId,
+      req.user.id,
       body.movieId,
     );
   }
 
   @Get()
   findAll(
+    @Request() req,
     @Query() query: PaginationWatchlistDto,
   ) {
     return this.watchlistService.findAll(
+      req.user.id,
       query.page,
       query.limit,
     );
@@ -41,9 +47,11 @@ export class WatchlistController {
 
   @Delete(':movieId')
   removeMovie(
+    @Request() req,
     @Param('movieId') movieId: string,
   ) {
     return this.watchlistService.removeMovie(
+      req.user.id,
       movieId,
     );
   }

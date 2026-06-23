@@ -17,59 +17,39 @@ export class WatchlistService {
 
   async addMovie(userId: string, movieId: string) {
     const exists = await this.watchlistRepository.findOne({
-      where: {
-        userId,
-        movieId,
-      },
+      where: { userId, movieId },
     });
 
     if (exists) {
-      throw new ConflictException(
-        'Movie already exists in watchlist',
-      );
+      throw new ConflictException('Movie already exists in watchlist');
     }
 
-    const watchlist = this.watchlistRepository.create({
-      userId,
-      movieId,
-    });
-
+    const watchlist = this.watchlistRepository.create({ userId, movieId });
     return this.watchlistRepository.save(watchlist);
   }
 
-  async findAll(page = 1, limit = 10) {
-    const [data, total] =
-      await this.watchlistRepository.findAndCount({
-        skip: (page - 1) * limit,
-        take: limit,
-        order: {
-          createdAt: 'DESC',
-        },
-      });
-
-    return {
-      total,
-      page,
-      limit,
-      data,
-    };
-  }
-
-  async removeMovie(movieId: string) {
-    const movie = await this.watchlistRepository.findOne({
-      where: { movieId },
+  async findAll(userId: string, page = 1, limit = 10) {
+    const [data, total] = await this.watchlistRepository.findAndCount({
+      where: { userId },
+     relations: { movie: true },
+      skip: (page - 1) * limit,
+      take: limit,
+      order: { createdAt: 'DESC' },
     });
 
-    if (!movie) {
-      throw new NotFoundException(
-        'Movie not found in watchlist',
-      );
+    return { total, page, limit, data };
+  }
+
+  async removeMovie(userId: string, movieId: string) {
+    const item = await this.watchlistRepository.findOne({
+      where: { userId, movieId },
+    });
+
+    if (!item) {
+      throw new NotFoundException('Movie not found in watchlist');
     }
 
-    await this.watchlistRepository.remove(movie);
-
-    return {
-      message: 'Movie removed successfully',
-    };
+    await this.watchlistRepository.remove(item);
+    return { message: 'Movie removed successfully' };
   }
 }
