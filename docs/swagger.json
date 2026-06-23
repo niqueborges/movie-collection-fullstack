@@ -1,0 +1,526 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User successfully registered"
+          },
+          "409": {
+            "description": "Email is already in use"
+          }
+        },
+        "summary": "Register a new user",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully logged in, returns JWT"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        },
+        "summary": "Login user",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/users/me": {
+      "get": {
+        "operationId": "UsersController_getProfile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Profile returned successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get authenticated user profile",
+        "tags": [
+          "users"
+        ]
+      },
+      "patch": {
+        "operationId": "UsersController_updateProfile",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update user profile",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/movies": {
+      "post": {
+        "operationId": "MoviesController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMovieDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Movie successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Register a new movie",
+        "tags": [
+          "movies"
+        ]
+      },
+      "get": {
+        "operationId": "MoviesController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "title",
+            "required": false,
+            "in": "query",
+            "description": "Search by partial title",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "genre",
+            "required": false,
+            "in": "query",
+            "description": "Filter by genre",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "releaseYear",
+            "required": false,
+            "in": "query",
+            "description": "Filter by release year",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Sort by a specific field",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "title",
+                "releaseYear",
+                "averageRating"
+              ]
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "Sort order",
+            "schema": {
+              "default": "ASC",
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Movie list returned successfully"
+          }
+        },
+        "summary": "List movies with pagination and filters",
+        "tags": [
+          "movies"
+        ]
+      }
+    },
+    "/movies/{id}": {
+      "get": {
+        "operationId": "MoviesController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Movie returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Movie not found"
+          }
+        },
+        "summary": "Get specific movie details",
+        "tags": [
+          "movies"
+        ]
+      },
+      "put": {
+        "operationId": "MoviesController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMovieDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Movie updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Movie not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update movie information",
+        "tags": [
+          "movies"
+        ]
+      },
+      "delete": {
+        "operationId": "MoviesController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Movie deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Movie not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a movie",
+        "tags": [
+          "movies"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Movie Collection API",
+    "description": "API REST para gerenciamento de filmes, listas pessoais e avaliacoes",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "RegisterDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateMovieDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Inception",
+            "description": "The title of the movie"
+          },
+          "description": {
+            "type": "string",
+            "example": "A thief who steals corporate secrets...",
+            "description": "The description or synopsis of the movie"
+          },
+          "releaseYear": {
+            "type": "number",
+            "example": 2010,
+            "description": "Release year of the movie (1800 to current year)"
+          },
+          "genre": {
+            "type": "string",
+            "example": "Science Fiction",
+            "description": "Genre of the movie"
+          },
+          "durationSeconds": {
+            "type": "number",
+            "example": 8880,
+            "description": "Duration of the movie in seconds"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "releaseYear",
+          "genre",
+          "durationSeconds"
+        ]
+      },
+      "Movie": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "description": "Automatically generated UUID"
+          },
+          "title": {
+            "type": "string",
+            "example": "Inception",
+            "description": "The title of the movie"
+          },
+          "description": {
+            "type": "string",
+            "example": "A thief who steals corporate secrets...",
+            "description": "The description or synopsis of the movie"
+          },
+          "releaseYear": {
+            "type": "number",
+            "example": 2010,
+            "description": "Release year of the movie"
+          },
+          "genre": {
+            "type": "string",
+            "example": "Science Fiction",
+            "description": "Genre of the movie"
+          },
+          "durationSeconds": {
+            "type": "number",
+            "example": 8880,
+            "description": "Duration of the movie in seconds"
+          },
+          "averageRating": {
+            "type": "number",
+            "example": 8.8,
+            "description": "The average rating of the movie based on reviews"
+          },
+          "totalReviews": {
+            "type": "number",
+            "example": 42,
+            "description": "The total number of reviews for the movie"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2026-06-23T15:14:03.473Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2026-06-23T15:14:03.473Z"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "description",
+          "releaseYear",
+          "genre",
+          "durationSeconds",
+          "averageRating",
+          "totalReviews",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateMovieDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Inception",
+            "description": "The title of the movie"
+          },
+          "description": {
+            "type": "string",
+            "example": "A thief who steals corporate secrets...",
+            "description": "The description or synopsis of the movie"
+          },
+          "releaseYear": {
+            "type": "number",
+            "example": 2010,
+            "description": "Release year of the movie (1800 to current year)"
+          },
+          "genre": {
+            "type": "string",
+            "example": "Science Fiction",
+            "description": "Genre of the movie"
+          },
+          "durationSeconds": {
+            "type": "number",
+            "example": 8880,
+            "description": "Duration of the movie in seconds"
+          }
+        }
+      }
+    }
+  }
+}
