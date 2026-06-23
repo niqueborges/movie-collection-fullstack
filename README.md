@@ -99,6 +99,14 @@ npm run test          # unit tests
 npm run test:cov      # com cobertura
 ```
 
+### 4. Documentacao (Swagger)
+
+A API possui documentacao interativa gerada automaticamente.
+Apos iniciar o projeto localmente, acesse:
+**[http://localhost:3000/api/docs](http://localhost:3000/api/docs)**
+
+> Para testar no Postman/Insomnia, voce pode importar o arquivo `docs/swagger.json` que ja contem as rotas e DTOs mapeados.
+
 ---
 
 ## Endpoints implementados
@@ -193,18 +201,28 @@ npm run test:cov      # com cobertura
 }
 ```
 
+### Filmes
+
+| Metodo | Rota | Protegido | Descricao |
+|---|---|---|---|
+| POST | `/movies` | JWT | Cadastrar filme |
+| GET | `/movies` | Nao | Listar filmes com paginacao e filtros |
+| GET | `/movies/:id` | Nao | Detalhes do filme |
+| PUT | `/movies/:id` | JWT | Atualizar informacoes de um filme |
+| DELETE | `/movies/:id` | JWT | Deletar um filme |
+
 ---
 
 ## Proximos passos
 
-### feature/movies (Pessoa 2)
+### feature/movies (Pessoa 2) - CONCLUIDO
 
-- [ ] Entidade `Movie` (titulo, descricao, ano, genero, duracao em segundos)
-- [ ] `POST /movies` — cadastrar filme
-- [ ] `GET /movies` — listar com paginacao, busca por titulo, filtro por genero/ano, ordenacao
-- [ ] `GET /movies/:id` — detalhes + nota media + total de avaliacoes (publico)
-- [ ] `PUT /movies/:id` — atualizar filme
-- [ ] `DELETE /movies/:id` — deletar filme (remove de listas e avaliacoes em cascata)
+- [x] Entidade `Movie` (titulo, descricao, ano, genero, duracao em segundos)
+- [x] `POST /movies` — cadastrar filme
+- [x] `GET /movies` — listar com paginacao, busca por titulo, filtro por genero/ano, ordenacao
+- [x] `GET /movies/:id` — detalhes + nota media + total de avaliacoes (publico)
+- [x] `PUT /movies/:id` — atualizar filme
+- [x] `DELETE /movies/:id` — deletar filme (remove de listas e avaliacoes em cascata)
 
 ### feature/watchlist (Pessoa 3)
 
@@ -227,7 +245,7 @@ npm run test:cov      # com cobertura
 - [ ] Testes unitarios (`UsersService`, `AuthService`, `MoviesService`, `ReviewsService`)
 - [ ] Dockerfile
 - [ ] README final com todos os endpoints
-- [ ] Swagger (opcional mas recomendado)
+- [x] Swagger (documentacao interativa e exportacao JSON configurada)
 - [ ] Merge de todas as branches em `develop`
 - [ ] Merge `develop` → `main`
 - [ ] Tag `v1.0.0`
@@ -251,13 +269,22 @@ src/
     users.controller.ts
     users.module.ts
     users.service.ts
-  movies/             # a implementar — feature/movies
+  movies/
+    dto/
+    entities/
+    movies.controller.ts
+    movies.module.ts
+    movies.service.ts
   watchlist/          # a implementar — feature/watchlist
   reviews/            # a implementar — feature/reviews
   app.module.ts
   main.ts
 docs/
+  guide-movies.md
+  guide-reviews.md
+  guide-watchlist.md
   requirements.md     # requisitos originais do bootcamp
+  swagger.json        # exportacao da doc para importacao facil
 docker-compose.yml
 .env.example
 ```
