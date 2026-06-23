@@ -4,8 +4,12 @@ import {
   Column, 
   CreateDateColumn, 
   UpdateDateColumn,
-  Index
+  Index,
+  ManyToOne,
+  JoinColumn
 } from 'typeorm';
+import { User } from '../../users/entities/user.entity'; 
+import { Movie } from '../../movies/entities/movie.entity'; // This will work now!
 
 @Entity('reviews')
 @Index(['userId', 'movieId'], { unique: true }) 
@@ -15,7 +19,7 @@ export class Review {
 
   @Column({ type: 'decimal', precision: 3, scale: 1 })
   rating!: number;
- 
+
   @Column({ type: 'text', nullable: true })
   comment!: string;
 
@@ -24,6 +28,15 @@ export class Review {
 
   @Column({ name: 'movie_id' })
   movieId!: string;
+
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
+  user!: User;
+
+  @ManyToOne(() => Movie, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'movie_id' })
+  movie!: Movie;
+
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
