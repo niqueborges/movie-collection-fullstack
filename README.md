@@ -233,16 +233,16 @@ After starting the project locally, access:
 - [x] `PUT /movies/:id` — update movie
 - [x] `DELETE /movies/:id` — delete movie (removes from lists and reviews in cascade)
 
-### feature/watchlist (Person 3)
+### feature/watchlist (Person 3) - COMPLETED
 
-- [ ] `WatchlistItem` Entity
-- [ ] `POST /watchlist` — add movie to personal watchlist
-- [ ] `GET /watchlist` — list movies from the watchlist (paginated, with full movie data)
-- [ ] `DELETE /watchlist/:movieId` — remove movie from the watchlist
+- [x] `WatchlistItem` Entity
+- [x] `POST /watchlist` — add movie to personal watchlist
+- [x] `GET /watchlist` — list movies from the watchlist (paginated, with full movie data)
+- [x] `DELETE /watchlist/:movieId` — remove movie from the watchlist
 
 ### feature/reviews (Person 4)
 
-- [ ] `Review` Entity (rating from 0 to 10, decimal)
+- [x] `Review` Entity (rating from 0 to 10, decimal)
 - [ ] `POST /reviews` — rate a movie (or update if it already exists)
 - [ ] `GET /reviews` — list reviews of the authenticated user (paginated)
 - [ ] `PATCH /reviews/:id` — update rating (recalculates movie average)
