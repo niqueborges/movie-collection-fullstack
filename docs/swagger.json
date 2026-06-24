@@ -1,7 +1,7 @@
-{
+﻿{
   "openapi": "3.0.0",
   "paths": {
-    "/auth/register": {
+    "/api/auth/register": {
       "post": {
         "operationId": "AuthController_register",
         "parameters": [],
@@ -24,12 +24,10 @@
           }
         },
         "summary": "Register a new user",
-        "tags": [
-          "auth"
-        ]
+        "tags": ["auth"]
       }
     },
-    "/auth/login": {
+    "/api/auth/login": {
       "post": {
         "operationId": "AuthController_login",
         "parameters": [],
@@ -52,12 +50,10 @@
           }
         },
         "summary": "Login user",
-        "tags": [
-          "auth"
-        ]
+        "tags": ["auth"]
       }
     },
-    "/users/me": {
+    "/api/users/me": {
       "get": {
         "operationId": "UsersController_getProfile",
         "parameters": [],
@@ -75,9 +71,7 @@
           }
         ],
         "summary": "Get authenticated user profile",
-        "tags": [
-          "users"
-        ]
+        "tags": ["users"]
       },
       "patch": {
         "operationId": "UsersController_updateProfile",
@@ -106,12 +100,10 @@
           }
         ],
         "summary": "Update user profile",
-        "tags": [
-          "users"
-        ]
+        "tags": ["users"]
       }
     },
-    "/movies": {
+    "/api/movies": {
       "post": {
         "operationId": "MoviesController_create",
         "parameters": [],
@@ -146,9 +138,7 @@
           }
         ],
         "summary": "Register a new movie",
-        "tags": [
-          "movies"
-        ]
+        "tags": ["movies"]
       },
       "get": {
         "operationId": "MoviesController_findAll",
@@ -207,11 +197,7 @@
             "description": "Sort by a specific field",
             "schema": {
               "type": "string",
-              "enum": [
-                "title",
-                "releaseYear",
-                "averageRating"
-              ]
+              "enum": ["title", "releaseYear", "averageRating"]
             }
           },
           {
@@ -222,10 +208,7 @@
             "schema": {
               "default": "ASC",
               "type": "string",
-              "enum": [
-                "ASC",
-                "DESC"
-              ]
+              "enum": ["ASC", "DESC"]
             }
           }
         ],
@@ -235,12 +218,10 @@
           }
         },
         "summary": "List movies with pagination and filters",
-        "tags": [
-          "movies"
-        ]
+        "tags": ["movies"]
       }
     },
-    "/movies/{id}": {
+    "/api/movies/{id}": {
       "get": {
         "operationId": "MoviesController_findOne",
         "parameters": [
@@ -269,9 +250,7 @@
           }
         },
         "summary": "Get specific movie details",
-        "tags": [
-          "movies"
-        ]
+        "tags": ["movies"]
       },
       "put": {
         "operationId": "MoviesController_update",
@@ -319,9 +298,7 @@
           }
         ],
         "summary": "Update movie information",
-        "tags": [
-          "movies"
-        ]
+        "tags": ["movies"]
       },
       "delete": {
         "operationId": "MoviesController_remove",
@@ -352,9 +329,7 @@
           }
         ],
         "summary": "Delete a movie",
-        "tags": [
-          "movies"
-        ]
+        "tags": ["movies"]
       }
     }
   },
@@ -476,6 +451,12 @@
             "format": "date-time",
             "type": "string",
             "example": "2026-06-23T15:14:03.473Z"
+          },
+          "deletedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": null,
+            "description": "Timestamp of soft deletion"
           }
         },
         "required": [
@@ -488,7 +469,8 @@
           "averageRating",
           "totalReviews",
           "createdAt",
-          "updatedAt"
+          "updatedAt",
+          "deletedAt"
         ]
       },
       "UpdateMovieDto": {
