@@ -22,7 +22,7 @@ import { MoviesModule } from './movies/movies.module';
         password: config.get<string>('DATABASE_PASSWORD'),
         database: config.get<string>('DATABASE_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        // Mantido como true exclusivamente para facilitar os testes dos instrutores do Bootcamp
+        // Kept as true exclusively to facilitate testing for Bootcamp instructors
         synchronize: true,
         logging: false,
       }),
