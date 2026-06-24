@@ -286,8 +286,19 @@ src/
     movies.service.ts
   common/
     interceptors/     # LoggingInterceptor
-  watchlist/          # to be implemented — feature/watchlist
-  reviews/            # to be implemented — feature/reviews
+  watchlist/
+    dto/
+    entities/
+    watchlist.controller.ts
+    watchlist.module.ts
+    watchlist.service.ts
+  reviews/
+    dto/
+    entities/
+    mappers/
+    reviews.controller.ts
+    reviews.module.ts
+    reviews.service.ts
   app.controller.ts
   app.module.ts
   app.service.ts
