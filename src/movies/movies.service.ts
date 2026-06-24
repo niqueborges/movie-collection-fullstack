@@ -16,7 +16,9 @@ export class MoviesService {
   ) {}
 
   async create(createMovieDto: CreateMovieDto): Promise<Movie> {
-    this.logger.log(`Attempting to create a new movie: ${createMovieDto.title}`);
+    this.logger.log(
+      `Attempting to create a new movie: ${createMovieDto.title}`,
+    );
     const movie = this.moviesRepository.create(createMovieDto);
     const savedMovie = await this.moviesRepository.save(movie);
     this.logger.log(`Movie created successfully: ${savedMovie.id}`);
@@ -24,9 +26,19 @@ export class MoviesService {
   }
 
   async findAll(queryDto: QueryMovieDto) {
-    this.logger.log(`Fetching movies with query parameters: ${JSON.stringify(queryDto)}`);
-    const { page = 1, limit = 10, title, genre, releaseYear, sortBy, order } = queryDto;
-    
+    this.logger.log(
+      `Fetching movies with query parameters: ${JSON.stringify(queryDto)}`,
+    );
+    const {
+      page = 1,
+      limit = 10,
+      title,
+      genre,
+      releaseYear,
+      sortBy,
+      order,
+    } = queryDto;
+
     const query = this.moviesRepository.createQueryBuilder('movie');
 
     if (title) {

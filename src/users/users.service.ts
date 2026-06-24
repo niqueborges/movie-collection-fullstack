@@ -27,7 +27,9 @@ export class UsersService {
     });
 
     if (existing) {
-      this.logger.warn(`User creation failed - Email already in use: ${dto.email}`);
+      this.logger.warn(
+        `User creation failed - Email already in use: ${dto.email}`,
+      );
       throw new ConflictException('Email already in use');
     }
 

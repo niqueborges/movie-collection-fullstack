@@ -1,5 +1,18 @@
-import { Body, Controller, Get, Patch, Req, UseGuards, Logger } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Req,
+  UseGuards,
+  Logger,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -31,7 +44,9 @@ export class UsersController {
   @ApiResponse({ status: 200, description: 'Profile updated successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async updateProfile(@Req() req: any, @Body() dto: UpdateUserDto) {
-    this.logger.log(`Handling updateProfile request for user ID: ${req.user.id}`);
+    this.logger.log(
+      `Handling updateProfile request for user ID: ${req.user.id}`,
+    );
     const user = await this.usersService.update(req.user.id, dto);
     return UsersMapper.toDto(user);
   }
