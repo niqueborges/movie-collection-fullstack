@@ -86,4 +86,41 @@ describe('UsersService', () => {
       );
     });
   });
-});
+
+  describe('findByEmail', () => {
+    it('should return a user if found by email', async () => {
+      const mockUser = { id: 'uuid', email: 'test@test.com' };
+      mockUserRepository.findOne.mockResolvedValue(mockUser);
+
+      const result = await service.findByEmail('test@test.com');
+      expect(result).toEqual(mockUser);
+    });
+
+    it('should return null if user not found by email', async () => {
+      mockUserRepository.findOne.mockResolvedValue(null);
+
+      const result = await service.findByEmail('invalid@test.com');
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('update', () => {
+    it('should update and return the user', async () => {
+      const mockUser = { id: 'uuid', name: 'Test' };
+      const dto = { name: 'Updated Name' };
+      mockUserRepository.findOne.mockResolvedValue(mockUser);
+      mockUserRepository.save.mockResolvedValue({ ...mockUser, ...dto });
+
+      const result = await service.update('uuid', dto);
+      expect(result.name).toBe('Updated Name');
+      expect(mockUserRepository.save).toHaveBeenCalled();
+    });
+
+    it('should throw NotFoundException if user to update is not found', async () => {
+      mockUserRepository.findOne.mockResolvedValue(null);
+
+      await expect(service.update('invalid-id', { name: 'Any' })).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+  });});
