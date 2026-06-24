@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Post,
   Query,
@@ -18,6 +19,8 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 @UseGuards(JwtAuthGuard)
 @Controller('watchlist')
 export class WatchlistController {
+  private readonly logger = new Logger(WatchlistController.name);
+
   constructor(
     private readonly watchlistService: WatchlistService,
   ) {}
@@ -27,10 +30,8 @@ export class WatchlistController {
     @Request() req,
     @Body() body: CreateWatchlistDto,
   ) {
-    return this.watchlistService.addMovie(
-      req.user.id,
-      body.movieId,
-    );
+    this.logger.log(`POST /watchlist - user ${req.user.id} adding movie ${body.movieId}`);
+    return this.watchlistService.addMovie(req.user.id, body.movieId);
   }
 
   @Get()
@@ -38,11 +39,8 @@ export class WatchlistController {
     @Request() req,
     @Query() query: PaginationWatchlistDto,
   ) {
-    return this.watchlistService.findAll(
-      req.user.id,
-      query.page,
-      query.limit,
-    );
+    this.logger.log(`GET /watchlist - user ${req.user.id} - page ${query.page}, limit ${query.limit}`);
+    return this.watchlistService.findAll(req.user.id, query.page, query.limit);
   }
 
   @Delete(':movieId')
@@ -50,9 +48,7 @@ export class WatchlistController {
     @Request() req,
     @Param('movieId') movieId: string,
   ) {
-    return this.watchlistService.removeMovie(
-      req.user.id,
-      movieId,
-    );
+    this.logger.log(`DELETE /watchlist/${movieId} - user ${req.user.id}`);
+    return this.watchlistService.removeMovie(req.user.id, movieId);
   }
 }
