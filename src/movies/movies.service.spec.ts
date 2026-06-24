@@ -65,7 +65,13 @@ describe('MoviesService', () => {
 
   describe('create', () => {
     it('should create and return a movie', async () => {
-      const dto = { title: 'Test', description: 'Desc', releaseYear: 2020, genre: 'Action', durationInSeconds: 120 };
+      const dto = {
+        title: 'Test',
+        description: 'Desc',
+        releaseYear: 2020,
+        genre: 'Action',
+        durationInSeconds: 120,
+      };
       const savedMovie = { id: 'uuid', ...dto };
       mockMovieRepository.create.mockReturnValue(savedMovie);
       mockMovieRepository.save.mockResolvedValue(savedMovie);
@@ -83,11 +89,21 @@ describe('MoviesService', () => {
         orderBy: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
         take: jest.fn().mockReturnThis(),
-        getManyAndCount: jest.fn().mockResolvedValue([[{ id: '1', title: 'Test' }], 1]),
+        getManyAndCount: jest
+          .fn()
+          .mockResolvedValue([[{ id: '1', title: 'Test' }], 1]),
       };
-      mockMovieRepository.createQueryBuilder.mockReturnValue(mockQueryBuilder as any);
+      mockMovieRepository.createQueryBuilder.mockReturnValue(
+        mockQueryBuilder as any,
+      );
 
-      const result = await service.findAll({ page: 1, limit: 10, title: 'Test', genre: 'Action', releaseYear: 2020 });
+      const result = await service.findAll({
+        page: 1,
+        limit: 10,
+        title: 'Test',
+        genre: 'Action',
+        releaseYear: 2020,
+      });
       expect(result.data).toHaveLength(1);
       expect(result.total).toBe(1);
       expect(mockQueryBuilder.andWhere).toHaveBeenCalledTimes(3);
@@ -99,7 +115,9 @@ describe('MoviesService', () => {
       const mockMovie = { id: 'uuid', title: 'Old' };
       const dto = { title: 'New' };
       mockMovieRepository.findOne.mockResolvedValue(mockMovie);
-      mockMovieRepository.merge.mockImplementation((obj, updates) => Object.assign(obj, updates));
+      mockMovieRepository.merge.mockImplementation((obj, updates) =>
+        Object.assign(obj, updates),
+      );
       mockMovieRepository.save.mockResolvedValue({ ...mockMovie, ...dto });
 
       const result = await service.update('uuid', dto);
