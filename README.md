@@ -1,34 +1,34 @@
 # Movie Collection API
 
-API REST para gerenciamento de filmes, listas pessoais e avaliacoes de usuarios.
+REST API for managing movies, personal watchlists, and user reviews.
 
 - **Stack**: NestJS + TypeScript + PostgreSQL + TypeORM + JWT
-- **Entrega**: 29/06/2026 ate as 17:30
-- **Requisitos completos**: [docs/requirements.md](./docs/requirements.md)
+- **Deadline**: 06/29/2026 by 5:30 PM
+- **Full Requirements**: [docs/requirements.md](./docs/requirements.md)
 
 ---
 
-## Sumario
+## Summary
 
-- [Requisitos](#requisitos)
-- [Instalacao](#instalacao)
-- [Configuracao](#configuracao)
-- [Executando o projeto](#executando-o-projeto)
-- [Endpoints implementados](#endpoints-implementados)
-- [Proximos passos](#proximos-passos)
-- [Estrutura do projeto](#estrutura-do-projeto)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Running the project](#running-the-project)
+- [Implemented endpoints](#implemented-endpoints)
+- [Next steps](#next-steps)
+- [Project structure](#project-structure)
 
 ---
 
-## Requisitos
+## Requirements
 
-- Node.js v18 ou superior
-- npm v8 ou superior
+- Node.js v18 or higher
+- npm v8 or higher
 - Docker Desktop
 
 ---
 
-## Instalacao
+## Installation
 
 ```bash
 git clone https://github.com/niqueborges/movie-collection-api2.git
@@ -38,15 +38,15 @@ npm install
 
 ---
 
-## Configuracao
+## Configuration
 
-Crie o arquivo `.env` a partir do exemplo:
+Create the `.env` file from the example:
 
 ```bash
 cp .env.example .env
 ```
 
-Preencha os valores no `.env`:
+Fill in the values in `.env`:
 
 ```env
 PORT=3000
@@ -55,72 +55,72 @@ DATABASE_HOST=localhost
 DATABASE_PORT=5432
 DATABASE_NAME=movie_api
 DATABASE_USER=postgres
-DATABASE_PASSWORD=sua_senha_aqui
+DATABASE_PASSWORD=your_password_here
 
-JWT_SECRET=uma_string_longa_e_aleatoria
+JWT_SECRET=a_long_and_random_string
 JWT_EXPIRATION=1d
 ```
 
 ---
 
-## Executando o projeto
+## Running the project
 
-### 1. Subir o banco de dados
+### 1. Start the database
 
 ```bash
 docker compose up -d
 ```
 
-Verifica se subiu:
+Verify if it's up:
 
 ```bash
 docker ps
 ```
 
-O container `movie_api_db` deve aparecer com status `Up`.
+The container `movie_api_db` should appear with the status `Up`.
 
-### 2. Iniciar a API
+### 2. Start the API
 
 ```bash
-# Desenvolvimento (watch mode)
+# Development (watch mode)
 npm run start:dev
 
-# Producao
+# Production
 npm run build
 npm run start:prod
 ```
 
-A API estara disponivel em `http://localhost:3000/api`.
+The API will be available at `http://localhost:3000/api`.
 
-### 3. Executar testes
+### 3. Run tests
 
 ```bash
 npm run test          # unit tests
-npm run test:cov      # com cobertura
+npm run test:cov      # with coverage
 ```
 
-### 4. Documentacao (Swagger)
+### 4. Documentation (Swagger)
 
-A API possui documentacao interativa gerada automaticamente.
-Apos iniciar o projeto localmente, acesse:
+The API has auto-generated interactive documentation.
+After starting the project locally, access:
 **[http://localhost:3000/api/docs](http://localhost:3000/api/docs)**
 
-> Para testar no Postman/Insomnia, voce pode importar o arquivo `docs/swagger.json` que ja contem as rotas e DTOs mapeados.
+> To test in Postman/Insomnia, you can import the `docs/swagger.json` file which already contains the mapped routes and DTOs.
 
 ---
 
-## Endpoints implementados
+## Implemented endpoints
 
 > Base URL: `http://localhost:3000/api`
 >
-> Endpoints protegidos requerem o header: `Authorization: Bearer <token>`
+> Protected endpoints require the header: `Authorization: Bearer <token>`
 
-### Autenticacao
+### Authentication
 
-| Metodo | Rota | Protegido | Descricao |
+| Method | Route | Protected | Description |
 |---|---|---|---|
-| POST | `/auth/register` | Nao | Cadastro de usuario |
-| POST | `/auth/login` | Nao | Login, retorna JWT |
+| POST | `/auth/register` | No | User registration |
+| POST | `/auth/login` | No | Login, returns JWT |
 
 #### POST /auth/register
 
@@ -163,12 +163,12 @@ Apos iniciar o projeto localmente, acesse:
 }
 ```
 
-### Usuarios
+### Users
 
-| Metodo | Rota | Protegido | Descricao |
+| Method | Route | Protected | Description |
 |---|---|---|---|
-| GET | `/users/me` | JWT | Perfil do usuario autenticado |
-| PATCH | `/users/me` | JWT | Atualizar nome do perfil |
+| GET | `/users/me` | JWT | Authenticated user profile |
+| PATCH | `/users/me` | JWT | Update profile name |
 
 #### GET /users/me
 
@@ -201,58 +201,58 @@ Apos iniciar o projeto localmente, acesse:
 }
 ```
 
-### Filmes
+### Movies
 
-| Metodo | Rota | Protegido | Descricao |
+| Method | Route | Protected | Description |
 |---|---|---|---|
-| POST | `/movies` | JWT | Cadastrar filme |
-| GET | `/movies` | Nao | Listar filmes com paginacao e filtros |
-| GET | `/movies/:id` | Nao | Detalhes do filme |
-| PUT | `/movies/:id` | JWT | Atualizar informacoes de um filme |
-| DELETE | `/movies/:id` | JWT | Deletar um filme |
+| POST | `/movies` | JWT | Register movie |
+| GET | `/movies` | No | List movies with pagination and filters |
+| GET | `/movies/:id` | No | Movie details |
+| PUT | `/movies/:id` | JWT | Update movie information |
+| DELETE | `/movies/:id` | JWT | Delete a movie |
 
 ---
 
-## Proximos passos
+## Next steps
 
-### feature/movies (Pessoa 2) - CONCLUIDO
+### feature/movies (Person 2) - COMPLETED
 
-- [x] Entidade `Movie` (titulo, descricao, ano, genero, duracao em segundos)
-- [x] `POST /movies` — cadastrar filme
-- [x] `GET /movies` — listar com paginacao, busca por titulo, filtro por genero/ano, ordenacao
-- [x] `GET /movies/:id` — detalhes + nota media + total de avaliacoes (publico)
-- [x] `PUT /movies/:id` — atualizar filme
-- [x] `DELETE /movies/:id` — deletar filme (remove de listas e avaliacoes em cascata)
+- [x] `Movie` Entity (title, description, year, genre, duration in seconds)
+- [x] `POST /movies` — register movie
+- [x] `GET /movies` — list with pagination, search by title, filter by genre/year, sorting
+- [x] `GET /movies/:id` — details + average rating + total reviews (public)
+- [x] `PUT /movies/:id` — update movie
+- [x] `DELETE /movies/:id` — delete movie (removes from lists and reviews in cascade)
 
-### feature/watchlist (Pessoa 3)
+### feature/watchlist (Person 3)
 
-- [ ] Entidade `WatchlistItem`
-- [ ] `POST /watchlist` — adicionar filme a lista pessoal
-- [ ] `GET /watchlist` — listar filmes da lista (paginado, com dados completos do filme)
-- [ ] `DELETE /watchlist/:movieId` — remover filme da lista
+- [ ] `WatchlistItem` Entity
+- [ ] `POST /watchlist` — add movie to personal watchlist
+- [ ] `GET /watchlist` — list movies from the watchlist (paginated, with full movie data)
+- [ ] `DELETE /watchlist/:movieId` — remove movie from the watchlist
 
-### feature/reviews (Pessoa 4)
+### feature/reviews (Person 4)
 
-- [ ] Entidade `Review` (nota de 0 a 10, decimal)
-- [ ] `POST /reviews` — avaliar filme (ou atualizar se ja existir)
-- [ ] `GET /reviews` — listar avaliacoes do usuario autenticado (paginado)
-- [ ] `PATCH /reviews/:id` — atualizar nota (recalcula media do filme)
-- [ ] `DELETE /reviews/:id` — excluir avaliacao (recalcula media do filme)
+- [ ] `Review` Entity (rating from 0 to 10, decimal)
+- [ ] `POST /reviews` — rate a movie (or update if it already exists)
+- [ ] `GET /reviews` — list reviews of the authenticated user (paginated)
+- [ ] `PATCH /reviews/:id` — update rating (recalculates movie average)
+- [ ] `DELETE /reviews/:id` — delete review (recalculates movie average)
 
-### Integracao final (todos)
+### Final integration (everyone)
 
-- [ ] Logs de entrada, saida e erro em controllers e services
-- [ ] Testes unitarios (`UsersService`, `AuthService`, `MoviesService`, `ReviewsService`)
+- [ ] Input, output and error logs in controllers and services
+- [ ] Unit tests (`UsersService`, `AuthService`, `MoviesService`, `ReviewsService`)
 - [ ] Dockerfile
-- [ ] README final com todos os endpoints
-- [x] Swagger (documentacao interativa e exportacao JSON configurada)
-- [ ] Merge de todas as branches em `develop`
+- [ ] Final README with all endpoints
+- [x] Swagger (interactive documentation and JSON export configured)
+- [ ] Merge of all branches into `develop`
 - [ ] Merge `develop` → `main`
 - [ ] Tag `v1.0.0`
 
 ---
 
-## Estrutura do projeto
+## Project structure
 
 ```
 src/
@@ -275,31 +275,31 @@ src/
     movies.controller.ts
     movies.module.ts
     movies.service.ts
-  watchlist/          # a implementar — feature/watchlist
-  reviews/            # a implementar — feature/reviews
+  watchlist/          # to be implemented — feature/watchlist
+  reviews/            # to be implemented — feature/reviews
   app.module.ts
   main.ts
 docs/
   guide-movies.md
   guide-reviews.md
   guide-watchlist.md
-  requirements.md     # requisitos originais do bootcamp
-  swagger.json        # exportacao da doc para importacao facil
+  requirements.md     # original bootcamp requirements
+  swagger.json        # documentation export for easy importing
 docker-compose.yml
 .env.example
 ```
 
 ---
 
-## Variaveis de ambiente
+## Environment variables
 
-| Variavel | Descricao | Exemplo |
+| Variable | Description | Example |
 |---|---|---|
-| `PORT` | Porta da API | `3000` |
-| `DATABASE_HOST` | Host do banco | `localhost` |
-| `DATABASE_PORT` | Porta do banco | `5432` |
-| `DATABASE_NAME` | Nome do banco | `movie_api` |
-| `DATABASE_USER` | Usuario do banco | `postgres` |
-| `DATABASE_PASSWORD` | Senha do banco | `sua_senha` |
-| `JWT_SECRET` | Chave secreta do JWT | string longa e aleatoria |
-| `JWT_EXPIRATION` | Expiracao do token | `1d`, `7d`, `12h` |
+| `PORT` | API Port | `3000` |
+| `DATABASE_HOST` | Database host | `localhost` |
+| `DATABASE_PORT` | Database port | `5432` |
+| `DATABASE_NAME` | Database name | `movie_api` |
+| `DATABASE_USER` | Database user | `postgres` |
+| `DATABASE_PASSWORD` | Database password | `your_password` |
+| `JWT_SECRET` | JWT secret key | long and random string |
+| `JWT_EXPIRATION` | Token expiration | `1d`, `7d`, `12h` |
