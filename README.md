@@ -118,10 +118,10 @@ After starting the project locally, access:
 
 ### Authentication
 
-| Method | Route | Protected | Description |
-|---|---|---|---|
-| POST | `/auth/register` | No | User registration |
-| POST | `/auth/login` | No | Login, returns JWT |
+| Method | Route              | Protected | Description        |
+| ------ | ------------------ | --------- | ------------------ |
+| POST   | `/auth/register` | No        | User registration  |
+| POST   | `/auth/login`    | No        | Login, returns JWT |
 
 #### POST /auth/register
 
@@ -166,10 +166,10 @@ After starting the project locally, access:
 
 ### Users
 
-| Method | Route | Protected | Description |
-|---|---|---|---|
-| GET | `/users/me` | JWT | Authenticated user profile |
-| PATCH | `/users/me` | JWT | Update profile name |
+| Method | Route         | Protected | Description                |
+| ------ | ------------- | --------- | -------------------------- |
+| GET    | `/users/me` | JWT       | Authenticated user profile |
+| PATCH  | `/users/me` | JWT       | Update profile name        |
 
 #### GET /users/me
 
@@ -204,13 +204,13 @@ After starting the project locally, access:
 
 ### Movies
 
-| Method | Route | Protected | Description |
-|---|---|---|---|
-| POST | `/movies` | JWT | Register movie |
-| GET | `/movies` | No | List movies with pagination and filters |
-| GET | `/movies/:id` | No | Movie details |
-| PUT | `/movies/:id` | JWT | Update movie information |
-| DELETE | `/movies/:id` | JWT | Delete a movie |
+| Method | Route           | Protected | Description                             |
+| ------ | --------------- | --------- | --------------------------------------- |
+| POST   | `/movies`     | JWT       | Register movie                          |
+| GET    | `/movies`     | No        | List movies with pagination and filters |
+| GET    | `/movies/:id` | No        | Movie details                           |
+| PUT    | `/movies/:id` | JWT       | Update movie information                |
+| DELETE | `/movies/:id` | JWT       | Delete a movie                          |
 
 ---
 
@@ -218,31 +218,31 @@ After starting the project locally, access:
 
 ### feature/auth (Person 1) - COMPLETED
 
-- [x] User Entity and JWT authentication
-- [x] `POST /auth/register` — user registration
-- [x] `POST /auth/login` — user login
-- [x] `GET /users/me` — authenticated user profile
-- [x] `PATCH /users/me` — update user profile
+- [X] User Entity and JWT authentication
+- [X] `POST /auth/register` — user registration
+- [X] `POST /auth/login` — user login
+- [X] `GET /users/me` — authenticated user profile
+- [X] `PATCH /users/me` — update user profile
 
 ### feature/movies (Person 2) - COMPLETED
 
-- [x] `Movie` Entity (title, description, year, genre, duration in seconds)
-- [x] `POST /movies` — register movie
-- [x] `GET /movies` — list with pagination, search by title, filter by genre/year, sorting
-- [x] `GET /movies/:id` — details + average rating + total reviews (public)
-- [x] `PUT /movies/:id` — update movie
-- [x] `DELETE /movies/:id` — delete movie (removes from lists and reviews in cascade)
+- [X] `Movie` Entity (title, description, year, genre, duration in seconds)
+- [X] `POST /movies` — register movie
+- [X] `GET /movies` — list with pagination, search by title, filter by genre/year, sorting
+- [X] `GET /movies/:id` — details + average rating + total reviews (public)
+- [X] `PUT /movies/:id` — update movie
+- [X] `DELETE /movies/:id` — delete movie (removes from lists and reviews in cascade)
 
 ### feature/watchlist (Person 3) - COMPLETED
 
-- [x] `WatchlistItem` Entity
-- [x] `POST /watchlist` — add movie to personal watchlist
-- [x] `GET /watchlist` — list movies from the watchlist (paginated, with full movie data)
-- [x] `DELETE /watchlist/:movieId` — remove movie from the watchlist
+- [X] `WatchlistItem` Entity
+- [X] `POST /watchlist` — add movie to personal watchlist
+- [X] `GET /watchlist` — list movies from the watchlist (paginated, with full movie data)
+- [X] `DELETE /watchlist/:movieId` — remove movie from the watchlist
 
 ### feature/reviews (Person 4)
 
-- [x] `Review` Entity (rating from 0 to 10, decimal)
+- [X] `Review` Entity (rating from 0 to 10, decimal)
 - [ ] `POST /reviews` — rate a movie (or update if it already exists)
 - [ ] `GET /reviews` — list reviews of the authenticated user (paginated)
 - [ ] `PATCH /reviews/:id` — update rating (recalculates movie average)
@@ -250,11 +250,11 @@ After starting the project locally, access:
 
 ### Final integration (everyone)
 
-- [x] Input, output and error logs in controllers and services
+- [X] Input, output and error logs in controllers and services
 - [ ] Unit tests (`UsersService`, `AuthService`, `MoviesService`, `ReviewsService`)
-- [x] Dockerfile
+- [X] Dockerfile
 - [ ] Final README with all endpoints
-- [x] Swagger (interactive documentation and JSON export configured)
+- [X] Swagger (interactive documentation and JSON export configured)
 - [ ] Merge of all branches into `develop`
 - [ ] Merge `develop` → `main`
 - [ ] Tag `v1.0.0`
@@ -304,9 +304,6 @@ src/
   app.service.ts
   main.ts
 docs/
-  guide-movies.md
-  guide-reviews.md
-  guide-watchlist.md
   requirements.md     # original bootcamp requirements
   swagger.json        # documentation export for easy importing
 docker-compose.yml
@@ -317,13 +314,13 @@ docker-compose.yml
 
 ## Environment variables
 
-| Variable | Description | Example |
-|---|---|---|
-| `PORT` | API Port | `3000` |
-| `DATABASE_HOST` | Database host | `localhost` |
-| `DATABASE_PORT` | Database port | `5432` |
-| `DATABASE_NAME` | Database name | `movie_api` |
-| `DATABASE_USER` | Database user | `postgres` |
-| `DATABASE_PASSWORD` | Database password | `your_password` |
-| `JWT_SECRET` | JWT secret key | long and random string |
-| `JWT_EXPIRATION` | Token expiration | `1d`, `7d`, `12h` |
+| Variable              | Description       | Example                 |
+| --------------------- | ----------------- | ----------------------- |
+| `PORT`              | API Port          | `3000`                |
+| `DATABASE_HOST`     | Database host     | `localhost`           |
+| `DATABASE_PORT`     | Database port     | `5432`                |
+| `DATABASE_NAME`     | Database name     | `movie_api`           |
+| `DATABASE_USER`     | Database user     | `postgres`            |
+| `DATABASE_PASSWORD` | Database password | `your_password`       |
+| `JWT_SECRET`        | JWT secret key    | long and random string  |
+| `JWT_EXPIRATION`    | Token expiration  | `1d`, `7d`, `12h` |
