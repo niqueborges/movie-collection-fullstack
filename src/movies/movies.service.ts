@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -8,17 +8,23 @@ import { Movie } from './entities/movie.entity';
 
 @Injectable()
 export class MoviesService {
+  private readonly logger = new Logger(MoviesService.name);
+
   constructor(
     @InjectRepository(Movie)
     private readonly moviesRepository: Repository<Movie>,
   ) {}
 
   async create(createMovieDto: CreateMovieDto): Promise<Movie> {
+    this.logger.log(`Attempting to create a new movie: ${createMovieDto.title}`);
     const movie = this.moviesRepository.create(createMovieDto);
-    return this.moviesRepository.save(movie);
+    const savedMovie = await this.moviesRepository.save(movie);
+    this.logger.log(`Movie created successfully: ${savedMovie.id}`);
+    return savedMovie;
   }
 
   async findAll(queryDto: QueryMovieDto) {
+    this.logger.log(`Fetching movies with query parameters: ${JSON.stringify(queryDto)}`);
     const { page = 1, limit = 10, title, genre, releaseYear, sortBy, order } = queryDto;
     
     const query = this.moviesRepository.createQueryBuilder('movie');
@@ -45,6 +51,7 @@ export class MoviesService {
     query.skip(skip).take(limit);
 
     const [data, total] = await query.getManyAndCount();
+    this.logger.log(`Found ${total} movies`);
 
     return {
       data,
@@ -55,21 +62,28 @@ export class MoviesService {
   }
 
   async findOne(id: string): Promise<Movie> {
+    this.logger.log(`Fetching movie with ID: ${id}`);
     const movie = await this.moviesRepository.findOne({ where: { id } });
     if (!movie) {
+      this.logger.warn(`Movie not found: ${id}`);
       throw new NotFoundException(`Movie with ID ${id} not found`);
     }
     return movie;
   }
 
   async update(id: string, updateMovieDto: UpdateMovieDto): Promise<Movie> {
+    this.logger.log(`Updating movie with ID: ${id}`);
     const movie = await this.findOne(id);
     this.moviesRepository.merge(movie, updateMovieDto);
-    return this.moviesRepository.save(movie);
+    const updatedMovie = await this.moviesRepository.save(movie);
+    this.logger.log(`Movie updated successfully: ${id}`);
+    return updatedMovie;
   }
 
   async remove(id: string): Promise<void> {
+    this.logger.log(`Attempting to soft delete movie with ID: ${id}`);
     const movie = await this.findOne(id);
-    await this.moviesRepository.remove(movie);
+    await this.moviesRepository.softRemove(movie);
+    this.logger.log(`Movie soft deleted successfully: ${id}`);
   }
 }

@@ -5,6 +5,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity('movies')
@@ -48,4 +49,8 @@ export class Movie {
   @ApiProperty({ example: '2026-06-23T15:14:03.473Z' })
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @ApiProperty({ example: null, description: 'Timestamp of soft deletion' })
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date;
 }
