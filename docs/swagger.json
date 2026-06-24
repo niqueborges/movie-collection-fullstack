@@ -360,7 +360,7 @@
   },
   "info": {
     "title": "Movie Collection API",
-    "description": "API REST para gerenciamento de filmes, listas pessoais e avaliacoes",
+    "description": "REST API for managing movies, personal watchlists, and user reviews",
     "version": "1.0",
     "contact": {}
   },
