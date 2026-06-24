@@ -20,7 +20,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Movie Collection API')
-    .setDescription('REST API for managing movies, personal watchlists, and user reviews')
+    .setDescription(
+      'REST API for managing movies, personal watchlists, and user reviews',
+    )
     .setVersion('1.0')
     .addBearerAuth()
     .build();
@@ -34,4 +36,3 @@ async function bootstrap() {
 }
 
 bootstrap();
-

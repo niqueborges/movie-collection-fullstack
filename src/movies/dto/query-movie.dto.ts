@@ -44,12 +44,19 @@ export class QueryMovieDto {
   @Transform(({ value }) => parseInt(value, 10))
   releaseYear?: number;
 
-  @ApiPropertyOptional({ description: 'Sort by a specific field', enum: SortMovieBy })
+  @ApiPropertyOptional({
+    description: 'Sort by a specific field',
+    enum: SortMovieBy,
+  })
   @IsOptional()
   @IsEnum(SortMovieBy)
   sortBy?: SortMovieBy;
 
-  @ApiPropertyOptional({ description: 'Sort order', enum: SortOrder, default: SortOrder.ASC })
+  @ApiPropertyOptional({
+    description: 'Sort order',
+    enum: SortOrder,
+    default: SortOrder.ASC,
+  })
   @IsOptional()
   @IsEnum(SortOrder)
   order?: SortOrder = SortOrder.ASC;

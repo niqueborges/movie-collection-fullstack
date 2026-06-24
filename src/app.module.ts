@@ -33,4 +33,3 @@ import { MoviesModule } from './movies/movies.module';
   ],
 })
 export class AppModule {}
-
