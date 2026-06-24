@@ -36,7 +36,7 @@ describe('UsersController', () => {
       mockUsersService.findById.mockResolvedValue(mockUser);
 
       const result = await controller.getProfile({ user: { id: 'uuid' } });
-      
+
       expect(result.id).toEqual(mockUser.id);
       expect(result.name).toEqual(mockUser.name);
       expect(mockUsersService.findById).toHaveBeenCalledWith('uuid');

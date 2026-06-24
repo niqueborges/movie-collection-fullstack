@@ -45,7 +45,9 @@ describe('MoviesService', () => {
 
     it('should throw NotFoundException if movie is not found', async () => {
       mockMovieRepository.findOne.mockResolvedValue(null);
-      await expect(service.findOne('invalid')).rejects.toThrow(NotFoundException);
+      await expect(service.findOne('invalid')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 

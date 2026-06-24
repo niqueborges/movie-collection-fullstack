@@ -9,7 +9,7 @@ jest.mock('bcrypt');
 
 describe('UsersService', () => {
   let service: UsersService;
-  
+
   const mockUserRepository = {
     create: jest.fn(),
     save: jest.fn(),
@@ -37,10 +37,14 @@ describe('UsersService', () => {
 
   describe('create', () => {
     it('should create a new user successfully', async () => {
-      const dto = { name: 'Test', email: 'test@test.com', password: 'password123' };
+      const dto = {
+        name: 'Test',
+        email: 'test@test.com',
+        password: 'password123',
+      };
       mockUserRepository.findOne.mockResolvedValue(null);
       (bcrypt.hash as jest.Mock).mockResolvedValue('hashedPassword');
-      
+
       const savedUser = { id: 'uuid', ...dto, password: 'hashedPassword' };
       mockUserRepository.create.mockReturnValue(savedUser);
       mockUserRepository.save.mockResolvedValue(savedUser);
@@ -51,8 +55,15 @@ describe('UsersService', () => {
     });
 
     it('should throw ConflictException if email exists', async () => {
-      const dto = { name: 'Test', email: 'test@test.com', password: 'password123' };
-      mockUserRepository.findOne.mockResolvedValue({ id: 'uuid', email: 'test@test.com' });
+      const dto = {
+        name: 'Test',
+        email: 'test@test.com',
+        password: 'password123',
+      };
+      mockUserRepository.findOne.mockResolvedValue({
+        id: 'uuid',
+        email: 'test@test.com',
+      });
 
       await expect(service.create(dto)).rejects.toThrow(ConflictException);
     });
@@ -70,7 +81,9 @@ describe('UsersService', () => {
     it('should throw NotFoundException if not found', async () => {
       mockUserRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.findById('invalid-id')).rejects.toThrow(NotFoundException);
+      await expect(service.findById('invalid-id')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });
