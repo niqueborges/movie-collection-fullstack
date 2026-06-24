@@ -4,6 +4,7 @@ REST API for managing movies, personal watchlists, and user reviews.
 
 - **Stack**: NestJS + TypeScript + PostgreSQL + TypeORM + JWT
 - **Deadline**: 06/29/2026 by 5:30 PM
+- **Status**: In Progress (Auth and Movies completed)
 - **Full Requirements**: [docs/requirements.md](./docs/requirements.md)
 
 ---
@@ -215,6 +216,14 @@ After starting the project locally, access:
 
 ## Next steps
 
+### feature/auth (Person 1) - COMPLETED
+
+- [x] User Entity and JWT authentication
+- [x] `POST /auth/register` — user registration
+- [x] `POST /auth/login` — user login
+- [x] `GET /users/me` — authenticated user profile
+- [x] `PATCH /users/me` — update user profile
+
 ### feature/movies (Person 2) - COMPLETED
 
 - [x] `Movie` Entity (title, description, year, genre, duration in seconds)
@@ -241,9 +250,9 @@ After starting the project locally, access:
 
 ### Final integration (everyone)
 
-- [ ] Input, output and error logs in controllers and services
+- [x] Input, output and error logs in controllers and services
 - [ ] Unit tests (`UsersService`, `AuthService`, `MoviesService`, `ReviewsService`)
-- [ ] Dockerfile
+- [x] Dockerfile
 - [ ] Final README with all endpoints
 - [x] Swagger (interactive documentation and JSON export configured)
 - [ ] Merge of all branches into `develop`
@@ -275,9 +284,13 @@ src/
     movies.controller.ts
     movies.module.ts
     movies.service.ts
+  common/
+    interceptors/     # LoggingInterceptor
   watchlist/          # to be implemented — feature/watchlist
   reviews/            # to be implemented — feature/reviews
+  app.controller.ts
   app.module.ts
+  app.service.ts
   main.ts
 docs/
   guide-movies.md
