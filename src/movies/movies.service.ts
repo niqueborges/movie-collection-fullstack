@@ -71,7 +71,7 @@ export class MoviesService {
 
   async remove(id: string): Promise<void> {
     const movie = await this.findOne(id);
-    await this.moviesRepository.remove(movie);
+    await this.moviesRepository.softRemove(movie);
   }
 
   async importMovies(file: Express.Multer.File): Promise<{ imported: number }> {
