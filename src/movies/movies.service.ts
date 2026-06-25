@@ -5,7 +5,7 @@ import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { QueryMovieDto } from './dto/query-movie.dto';
 import { Movie } from './entities/movie.entity';
-import * as Papa from 'papaparse';
+import { MovieFileParser } from './utils/file-parser.util';
 
 @Injectable()
 export class MoviesService {
@@ -75,32 +75,7 @@ export class MoviesService {
   }
 
   async importMovies(file: Express.Multer.File): Promise<{ imported: number }> {
-    if (!file) {
-      throw new BadRequestException('No file provided');
-    }
-
-    const ext = file.originalname.split('.').pop()?.toLowerCase();
-    const content = file.buffer.toString('utf-8');
-    let moviesData: any[] = [];
-
-    if (ext === 'json') {
-      try {
-        moviesData = JSON.parse(content);
-        if (!Array.isArray(moviesData)) {
-          moviesData = [moviesData];
-        }
-      } catch (err) {
-        throw new BadRequestException('Invalid JSON format');
-      }
-    } else if (ext === 'csv') {
-      const parsed = Papa.parse(content, { header: true, skipEmptyLines: true });
-      if (parsed.errors.length > 0) {
-        throw new BadRequestException('Invalid CSV format');
-      }
-      moviesData = parsed.data;
-    } else {
-      throw new BadRequestException('Unsupported file format. Use CSV or JSON');
-    }
+    const moviesData = MovieFileParser.parse(file);
 
     let importedCount = 0;
     for (const data of moviesData) {
