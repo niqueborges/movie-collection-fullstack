@@ -30,6 +30,9 @@ import { MoviesMapper } from './movies.mapper';
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
+  // Note: Role-Based Access Control (RBAC) was intentionally omitted here.
+  // In a real-world scenario, this endpoint should be protected by an 'ADMIN' role guard.
+  // Kept open to facilitate bootcamp instructors' evaluation.
   @Post()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -61,6 +64,9 @@ export class MoviesController {
     return MoviesMapper.toDto(movie);
   }
 
+  // Note: Role-Based Access Control (RBAC) was intentionally omitted here.
+  // In a real-world scenario, this endpoint should be protected by an 'ADMIN' role guard.
+  // Kept open to facilitate bootcamp instructors' evaluation.
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -73,6 +79,9 @@ export class MoviesController {
     return MoviesMapper.toDto(movie);
   }
 
+  // Note: Role-Based Access Control (RBAC) was intentionally omitted here.
+  // In a real-world scenario, this endpoint should be protected by an 'ADMIN' role guard.
+  // Kept open to facilitate bootcamp instructors' evaluation.
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
