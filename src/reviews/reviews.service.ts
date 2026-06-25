@@ -31,7 +31,6 @@ export class ReviewsService {
         return savedReview;
     }
 
-    // 2. GET /reviews/me (Busca as avaliações apenas do utilizador logado)
     async findAllByUserId(userId: string): Promise<Review[]> {
         return this.reviewsRepository.find({
             where: { userId },
@@ -41,7 +40,6 @@ export class ReviewsService {
         });
     }
 
-    // 3. PATCH /reviews/:id (Atualiza uma avaliação específica pelo ID)
     async update(id: string, updateReviewDto: UpdateReviewDto, userId: string): Promise<Review> {
         const existingReview = await this.findOneById(id);
         
@@ -54,7 +52,6 @@ export class ReviewsService {
         return this.findOneById(id);
     }  
 
-    // 4. DELETE /reviews/:id (Remove a avaliação)
     async remove(id: string, userId: string): Promise<void> {
         const existingReview = await this.findOneById(id);
         
@@ -63,7 +60,7 @@ export class ReviewsService {
         }
         
         await this.reviewsRepository.delete(id);
-        await this.recalculateAverageRating(existingReview.movieId); // <-- AQUI (se chamar depois de deletar, o cálculo vai ler o banco atualizado certinho!)
+        await this.recalculateAverageRating(existingReview.movieId); 
     }
 
     async recalculateAverageRating(movieId: string): Promise<void   > {
@@ -74,20 +71,17 @@ export class ReviewsService {
         const totalReviews = reviews.length;
         let averageRating = 0;
 
-        // 2. Se houver avaliações, calcula a média numérica real
         if (totalReviews > 0) {
             const totalRating = reviews.reduce((sum, review) => sum + Number(review.rating), 0);
             averageRating = parseFloat((totalRating / totalReviews).toFixed(1));
         }
 
-        // 3. Atualiza diretamente os dois campos na tabela de filmes
         await this.moviesRepository.update(movieId, {
-            averageRating: averageRating, // Garanta que esses nomes batem com a sua Entity de Movie
+            averageRating: averageRating, 
             totalReviews: totalReviews,
         });
     }
 
-    // Métodos auxiliares de ajuda (Helpers)
     async findOneById(id: string): Promise<Review> {
         const review = await this.reviewsRepository.findOne({
             where: { id },

@@ -9,7 +9,7 @@ import {
   JoinColumn
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity'; 
-import { Movie } from '../../movies/entities/movie.entity'; // This will work now!
+import { Movie } from '../../movies/entities/movie.entity'; 
 
 @Entity('reviews')
 @Index(['userId', 'movieId'], { unique: true }) 
