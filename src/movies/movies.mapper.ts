@@ -28,4 +28,8 @@ export class MoviesMapper {
     dto.updatedAt = entity.updatedAt;
     return dto;
   }
+
+  static toDtoList(entities: Movie[]): MovieResponseDto[] {
+    return entities.map((entity) => this.toDto(entity));
+  }
 }
