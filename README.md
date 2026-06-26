@@ -1,11 +1,9 @@
-# Movie Collection API
+# Movie Collection App (Full-Stack)
 
-REST API for managing movies, personal watchlists, and user reviews.
+A complete Full-Stack application for managing movies, personal watchlists, and user reviews.
 
-- **Stack**: NestJS + TypeScript + PostgreSQL + TypeORM + JWT
-- **Deadline**: 06/29/2026 by 5:30 PM
-- **Status**: In Progress (Auth and Movies completed)
-- **Full Requirements**: [docs/requirements.md](./docs/requirements.md)
+- **Stack**: React + Vite + CSS (Frontend) | NestJS + PostgreSQL + TypeORM + JWT (Backend)
+- **Status**: Active (Personal Lab)
 
 ---
 
