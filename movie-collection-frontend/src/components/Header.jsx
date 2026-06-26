@@ -1,14 +1,34 @@
 import React from 'react';
+import { Search, User, Film } from 'lucide-react';
 import './Header.css';
 
 export function Header() {
   return (
     <header className="header glass">
       <div className="header-container">
-        <h1 className="logo">🍿 Movie Collection</h1>
-        <nav>
-          <button className="btn-primary">Entrar</button>
+        
+        <div className="logo-container">
+          <Film className="logo-icon" size={28} strokeWidth={2.5} />
+          <h1 className="logo">MovieCollection</h1>
+        </div>
+        
+        <div className="search-bar">
+          <Search className="search-icon" size={18} />
+          <input 
+            type="text" 
+            placeholder="Pesquisar filmes, gêneros ou diretores..." 
+            className="search-input"
+          />
+        </div>
+
+        <nav className="nav-actions">
+          <button className="btn-secondary">Criar Conta</button>
+          <button className="btn-primary">
+            <User size={18} strokeWidth={2.5} />
+            Entrar
+          </button>
         </nav>
+
       </div>
     </header>
   );
