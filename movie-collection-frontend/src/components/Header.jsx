@@ -16,16 +16,16 @@ export function Header() {
           <Search className="search-icon" size={18} />
           <input 
             type="text" 
-            placeholder="Pesquisar filmes, gêneros ou diretores..." 
+            placeholder="Search movies, genres or directors..." 
             className="search-input"
           />
         </div>
 
         <nav className="nav-actions">
-          <button className="btn-secondary">Criar Conta</button>
+          <button className="btn-secondary">Sign Up</button>
           <button className="btn-primary">
             <User size={18} strokeWidth={2.5} />
-            Entrar
+            Sign In
           </button>
         </nav>
 

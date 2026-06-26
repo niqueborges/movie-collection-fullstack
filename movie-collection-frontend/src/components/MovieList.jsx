@@ -7,7 +7,7 @@ export function MovieList({ movies, loading, error }) {
     return (
       <div className="state-container glass">
         <div className="spinner"></div>
-        <p>Carregando catálogo...</p>
+        <p>Loading catalog...</p>
       </div>
     );
   }
@@ -23,7 +23,7 @@ export function MovieList({ movies, loading, error }) {
   if (!movies || movies.length === 0) {
     return (
       <div className="state-container glass">
-        <p>Nenhum filme encontrado na sua coleção.</p>
+        <p>No movies found in your collection.</p>
       </div>
     );
   }
