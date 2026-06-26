@@ -13,6 +13,7 @@ import {
   Put,
   UseInterceptors,
   UploadedFile,
+  Logger,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags, ApiConsumes, ApiBody } from '@nestjs/swagger';
@@ -28,6 +29,8 @@ import { MoviesMapper } from './movies.mapper';
 @ApiTags('movies')
 @Controller('movies')
 export class MoviesController {
+  private readonly logger = new Logger(MoviesController.name);
+
   constructor(private readonly moviesService: MoviesService) {}
 
   // Note: Role-Based Access Control (RBAC) was intentionally omitted here.
@@ -40,6 +43,7 @@ export class MoviesController {
   @ApiResponse({ status: 201, description: 'Movie successfully created', type: MovieResponseDto })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async create(@Body() createMovieDto: CreateMovieDto) {
+    this.logger.log(`Received request to create a movie`);
     const movie = await this.moviesService.create(createMovieDto);
     return MoviesMapper.toDto(movie);
   }
@@ -115,6 +119,7 @@ export class MoviesController {
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async importMovies(@UploadedFile() file: Express.Multer.File) {
+    this.logger.log(`Received request to import movies`);
     return this.moviesService.importMovies(file);
   }
 }

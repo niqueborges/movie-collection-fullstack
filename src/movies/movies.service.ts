@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -9,12 +9,15 @@ import { MovieFileParser } from './utils/file-parser.util';
 
 @Injectable()
 export class MoviesService {
+  private readonly logger = new Logger(MoviesService.name);
+
   constructor(
     @InjectRepository(Movie)
     private readonly moviesRepository: Repository<Movie>,
   ) {}
 
   async create(createMovieDto: CreateMovieDto): Promise<Movie> {
+    this.logger.log(`Creating new movie: ${createMovieDto.title}`);
     const movie = this.moviesRepository.create(createMovieDto);
     return this.moviesRepository.save(movie);
   }
@@ -56,6 +59,7 @@ export class MoviesService {
   }
 
   async findOne(id: string): Promise<Movie> {
+    this.logger.log(`Fetching movie by ID: ${id}`);
     const movie = await this.moviesRepository.findOne({ where: { id } });
     if (!movie) {
       throw new NotFoundException(`Movie with ID ${id} not found`);
@@ -70,11 +74,13 @@ export class MoviesService {
   }
 
   async remove(id: string): Promise<void> {
+    this.logger.log(`Attempting to remove movie with ID: ${id}`);
     const movie = await this.findOne(id);
     await this.moviesRepository.softRemove(movie);
   }
 
   async importMovies(file: Express.Multer.File): Promise<{ imported: number }> {
+    this.logger.log(`Starting movie import from file: ${file.originalname}`);
     const moviesData = MovieFileParser.parse(file);
 
     let importedCount = 0;
