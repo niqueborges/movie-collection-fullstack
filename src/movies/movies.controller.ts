@@ -11,6 +11,7 @@ import {
   HttpCode,
   HttpStatus,
   Put,
+  Logger,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MoviesService } from './movies.service';
@@ -23,6 +24,8 @@ import { Movie } from './entities/movie.entity';
 @ApiTags('movies')
 @Controller('movies')
 export class MoviesController {
+  private readonly logger = new Logger(MoviesController.name);
+
   constructor(private readonly moviesService: MoviesService) {}
 
   @Post()
@@ -32,6 +35,7 @@ export class MoviesController {
   @ApiResponse({ status: 201, description: 'Movie successfully created', type: Movie })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   create(@Body() createMovieDto: CreateMovieDto) {
+    this.logger.log(`Received request to create a movie`);
     return this.moviesService.create(createMovieDto);
   }
 

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -8,12 +8,15 @@ import { Movie } from './entities/movie.entity';
 
 @Injectable()
 export class MoviesService {
+  private readonly logger = new Logger(MoviesService.name);
+
   constructor(
     @InjectRepository(Movie)
     private readonly moviesRepository: Repository<Movie>,
   ) {}
 
   async create(createMovieDto: CreateMovieDto): Promise<Movie> {
+    this.logger.log(`Creating new movie: ${createMovieDto.title}`);
     const movie = this.moviesRepository.create(createMovieDto);
     return this.moviesRepository.save(movie);
   }
@@ -55,6 +58,7 @@ export class MoviesService {
   }
 
   async findOne(id: string): Promise<Movie> {
+    this.logger.log(`Fetching movie by ID: ${id}`);
     const movie = await this.moviesRepository.findOne({ where: { id } });
     if (!movie) {
       throw new NotFoundException(`Movie with ID ${id} not found`);
@@ -69,6 +73,7 @@ export class MoviesService {
   }
 
   async remove(id: string): Promise<void> {
+    this.logger.log(`Attempting to remove movie with ID: ${id}`);
     const movie = await this.findOne(id);
     await this.moviesRepository.remove(movie);
   }
