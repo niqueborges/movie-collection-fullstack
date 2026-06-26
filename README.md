@@ -104,7 +104,7 @@ npm run test:cov      # with coverage
 
 The API has auto-generated interactive documentation.
 After starting the project locally, access:
-**[http://localhost:3000/api/docs](http://localhost:3000/api/docs)**
+`http://localhost:3000/api/docs`
 
 > To test in Postman/Insomnia, you can import the `docs/swagger.json` file which already contains the mapped routes and DTOs.
 
@@ -212,6 +212,61 @@ After starting the project locally, access:
 | PUT    | `/movies/:id` | JWT       | Update movie information                |
 | DELETE | `/movies/:id` | JWT       | Delete a movie                          |
 
+### Watchlist
+
+| Method | Route                 | Protected | Description                            |
+| ------ | --------------------- | --------- | -------------------------------------- |
+| POST   | `/watchlist`          | JWT       | Add movie to personal watchlist        |
+| GET    | `/watchlist`          | JWT       | List movies from the watchlist         |
+| DELETE | `/watchlist/:movieId` | JWT       | Remove movie from the watchlist        |
+
+#### POST /watchlist
+
+```json
+// Body
+{
+  "movieId": "uuid"
+}
+
+// Response 201
+{
+  "id": "uuid",
+  "userId": "uuid",
+  "movieId": "uuid",
+  "createdAt": "2026-06-23T15:14:03.473Z"
+}
+```
+
+### Reviews
+
+| Method | Route           | Protected | Description                               |
+| ------ | --------------- | --------- | ----------------------------------------- |
+| POST   | `/reviews`      | JWT       | Rate a movie or update existing review    |
+| GET    | `/reviews/me`   | JWT       | List reviews of the authenticated user    |
+| PATCH  | `/reviews/:id`  | JWT       | Update your review rating/comment         |
+| DELETE | `/reviews/:id`  | JWT       | Delete your review                        |
+
+#### POST /reviews
+
+```json
+// Body
+{
+  "movieId": "uuid",
+  "rating": 8.5,
+  "comment": "Great movie!"
+}
+
+// Response 201
+{
+  "id": "uuid",
+  "movieId": "uuid",
+  "userId": "uuid",
+  "rating": 8.5,
+  "comment": "Great movie!",
+  "createdAt": "2026-06-23T15:14:03.473Z"
+}
+```
+
 ---
 
 ## Next steps
@@ -240,20 +295,20 @@ After starting the project locally, access:
 - [X] `GET /watchlist` — list movies from the watchlist (paginated, with full movie data)
 - [X] `DELETE /watchlist/:movieId` — remove movie from the watchlist
 
-### feature/reviews (Person 4)
+### feature/reviews (Person 4) - COMPLETED
 
 - [X] `Review` Entity (rating from 0 to 10, decimal)
-- [ ] `POST /reviews` — rate a movie (or update if it already exists)
-- [ ] `GET /reviews` — list reviews of the authenticated user (paginated)
-- [ ] `PATCH /reviews/:id` — update rating (recalculates movie average)
-- [ ] `DELETE /reviews/:id` — delete review (recalculates movie average)
+- [X] `POST /reviews` — rate a movie (or update if it already exists)
+- [X] `GET /reviews/me` — list reviews of the authenticated user (paginated)
+- [X] `PATCH /reviews/:id` — update rating (recalculates movie average)
+- [X] `DELETE /reviews/:id` — delete review (recalculates movie average)
 
 ### Final integration (everyone)
 
 - [X] Input, output and error logs in controllers and services
 - [ ] Unit tests (`UsersService`, `AuthService`, `MoviesService`, `ReviewsService`)
 - [X] Dockerfile
-- [ ] Final README with all endpoints
+- [X] Final README with all endpoints
 - [X] Swagger (interactive documentation and JSON export configured)
 - [ ] Merge of all branches into `develop`
 - [ ] Merge `develop` → `main`
@@ -269,36 +324,49 @@ src/
     dto/              # LoginDto, RegisterDto
     guards/           # JwtAuthGuard
     strategies/       # JwtStrategy
+    auth.controller.spec.ts
     auth.controller.ts
     auth.module.ts
+    auth.service.spec.ts
     auth.service.ts
   users/
     dto/              # CreateUserDto, UpdateUserDto
     entities/         # User
+    users.controller.spec.ts
     users.controller.ts
+    users.mapper.ts
     users.module.ts
+    users.service.spec.ts
     users.service.ts
   movies/
-    dto/
-    entities/
+    dto/              # CreateMovieDto, QueryMovieDto, UpdateMovieDto
+    entities/         # Movie
+    movies.controller.spec.ts
     movies.controller.ts
+    movies.mapper.ts
     movies.module.ts
+    movies.service.spec.ts
     movies.service.ts
   common/
     interceptors/     # LoggingInterceptor
   watchlist/
-    dto/
-    entities/
+    dto/              # CreateWatchlistDto, PaginationWatchlistDto
+    entities/         # Watchlist
+    watchlist.controller.spec.ts
     watchlist.controller.ts
+    watchlist.mapper.ts
     watchlist.module.ts
+    watchlist.service.spec.ts
     watchlist.service.ts
   reviews/
-    dto/
-    entities/
-    mappers/
+    dto/              # CreateReviewDto, ResponseReviewDto, UpdateReviewDto
+    entities/         # Review
+    mappers/          # ReviewMapper
     reviews.controller.ts
     reviews.module.ts
+    reviews.service.spec.ts
     reviews.service.ts
+  app.controller.spec.ts
   app.controller.ts
   app.module.ts
   app.service.ts
