@@ -30,8 +30,8 @@ A complete Full-Stack application for managing movies, personal watchlists, and 
 ## Installation
 
 ```bash
-git clone https://github.com/niqueborges/movie-collection-api2.git
-cd movie-collection-api2
+git clone https://github.com/niqueborges/movie-collection-fullstack.git
+cd movie-collection-fullstack
 npm install
 ```
 
@@ -78,7 +78,7 @@ docker ps
 
 The container `movie_api_db` should appear with the status `Up`.
 
-### 2. Start the API
+### 2. Start the Backend API
 
 ```bash
 # Development (watch mode)
@@ -91,7 +91,19 @@ npm run start:prod
 
 The API will be available at `http://localhost:3000/api`.
 
-### 3. Run tests
+### 3. Start the Frontend (React)
+
+Open a new terminal window:
+
+```bash
+cd movie-collection-frontend
+npm install
+npm run dev
+```
+
+The frontend will be available at `http://localhost:5173`.
+
+### 4. Run tests
 
 ```bash
 npm run test          # unit tests
@@ -267,57 +279,43 @@ After starting the project locally, access:
 
 ---
 
-## Next steps
+## Features Overview
 
-### feature/auth (Person 1) - COMPLETED
+### Authentication
+- User Entity and JWT authentication
+- User registration and login
+- Authenticated user profile and updates
 
-- [X] User Entity and JWT authentication
-- [X] `POST /auth/register` — user registration
-- [X] `POST /auth/login` — user login
-- [X] `GET /users/me` — authenticated user profile
-- [X] `PATCH /users/me` — update user profile
+### Movies
+- Movie Entity (title, description, year, genre, duration in seconds)
+- Register, list, update and delete movies
+- Pagination, search by title, filter by genre/year, and sorting
+- Movie details with average rating and total reviews (public)
 
-### feature/movies (Person 2) - COMPLETED
+### Watchlist
+- WatchlistItem Entity
+- Add/remove movies to personal watchlist
+- List movies from the watchlist (paginated)
 
-- [X] `Movie` Entity (title, description, year, genre, duration in seconds)
-- [X] `POST /movies` — register movie
-- [X] `GET /movies` — list with pagination, search by title, filter by genre/year, sorting
-- [X] `GET /movies/:id` — details + average rating + total reviews (public)
-- [X] `PUT /movies/:id` — update movie
-- [X] `DELETE /movies/:id` — delete movie (removes from lists and reviews in cascade)
+### Reviews
+- Review Entity (rating from 0 to 10, decimal)
+- Rate a movie (or update if it already exists)
+- List reviews of the authenticated user
+- Delete review and dynamically recalculate movie averages
 
-### feature/watchlist (Person 3) - COMPLETED
-
-- [X] `WatchlistItem` Entity
-- [X] `POST /watchlist` — add movie to personal watchlist
-- [X] `GET /watchlist` — list movies from the watchlist (paginated, with full movie data)
-- [X] `DELETE /watchlist/:movieId` — remove movie from the watchlist
-
-### feature/reviews (Person 4) - COMPLETED
-
-- [X] `Review` Entity (rating from 0 to 10, decimal)
-- [X] `POST /reviews` — rate a movie (or update if it already exists)
-- [X] `GET /reviews/me` — list reviews of the authenticated user (paginated)
-- [X] `PATCH /reviews/:id` — update rating (recalculates movie average)
-- [X] `DELETE /reviews/:id` — delete review (recalculates movie average)
-
-### Final integration (everyone)
-
-- [X] Input, output and error logs in controllers and services
-- [ ] Unit tests (`UsersService`, `AuthService`, `MoviesService`, `ReviewsService`)
-- [X] Dockerfile
-- [X] Final README with all endpoints
-- [X] Swagger (interactive documentation and JSON export configured)
-- [ ] Merge of all branches into `develop`
-- [ ] Merge `develop` → `main`
-- [ ] Tag `v1.0.0`
+### Integration & Architecture
+- Centralized exception handling, logging and DTO validation
+- Comprehensive Unit and End-to-End Test suites
+- Containerized with Docker
+- Swagger interactive documentation
 
 ---
 
 ## Project structure
 
 ```
-src/
+movie-collection-frontend/  # React + Vite application
+src/                        # NestJS Backend API
   auth/
     dto/              # LoginDto, RegisterDto
     guards/           # JwtAuthGuard
