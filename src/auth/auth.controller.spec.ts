@@ -38,4 +38,13 @@ describe('AuthController', () => {
     expect(result.access_token).toBe('token');
     expect(mockAuthService.login).toHaveBeenCalledWith(dto);
   });
+
+  it('should call authService.register', async () => {
+    const dto = { email: 'test@test.com', password: '123' } as any;
+    mockAuthService.register.mockResolvedValue({ access_token: 'token' });
+
+    const result = await controller.register(dto);
+    expect(result.access_token).toBe('token');
+    expect(mockAuthService.register).toHaveBeenCalledWith(dto);
+  });
 });

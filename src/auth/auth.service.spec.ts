@@ -42,6 +42,21 @@ describe('AuthService', () => {
     expect(service).toBeDefined();
   });
 
+  describe('register', () => {
+    it('should create user and return token', async () => {
+      mockUsersService.create.mockResolvedValue({
+        id: 'uuid',
+        email: 'test@test.com',
+      });
+      mockJwtService.sign.mockReturnValue('jwt-token');
+
+      const result = await service.register({ email: 'test@test.com', password: '123' } as any);
+      expect(mockUsersService.create).toHaveBeenCalled();
+      expect(result.access_token).toBe('jwt-token');
+      expect(result.user.id).toBe('uuid');
+    });
+  });
+
   describe('login', () => {
     it('should throw UnauthorizedException if user not found', async () => {
       mockUsersService.findByEmail.mockResolvedValue(null);

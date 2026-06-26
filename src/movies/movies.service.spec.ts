@@ -3,6 +3,7 @@ import { MoviesService } from './movies.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Movie } from './entities/movie.entity';
 import { NotFoundException } from '@nestjs/common';
+import { MovieFileParser } from './utils/file-parser.util';
 
 describe('MoviesService', () => {
   let service: MoviesService;
@@ -108,6 +109,19 @@ describe('MoviesService', () => {
       expect(result.total).toBe(1);
       expect(mockQueryBuilder.andWhere).toHaveBeenCalledTimes(3);
     });
+
+    it('should apply sorting if sortBy is provided', async () => {
+      const mockQueryBuilder = {
+        orderBy: jest.fn().mockReturnThis(),
+        skip: jest.fn().mockReturnThis(),
+        take: jest.fn().mockReturnThis(),
+        getManyAndCount: jest.fn().mockResolvedValue([[], 0]),
+      };
+      mockMovieRepository.createQueryBuilder.mockReturnValue(mockQueryBuilder as any);
+
+      await service.findAll({ page: 1, limit: 10, sortBy: 'title', order: 'ASC' });
+      expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith('movie.title', 'ASC');
+    });
   });
 
   describe('update', () => {
@@ -122,6 +136,23 @@ describe('MoviesService', () => {
 
       const result = await service.update('uuid', dto);
       expect(result.title).toBe('New');
+    });
+  });
+
+  describe('importMovies', () => {
+    it('should parse file and create valid movies', async () => {
+      const mockFile = {} as Express.Multer.File;
+      const parseSpy = jest.spyOn(MovieFileParser, 'parse').mockReturnValue([
+        { title: 'A', description: 'B', releaseYear: '2020', genre: 'C', durationSeconds: '120' },
+        { title: 'Invalid', description: 'B', releaseYear: 'NaN', genre: 'C', durationSeconds: '120' } // Should be skipped
+      ]);
+      const createSpy = jest.spyOn(service, 'create').mockResolvedValue({ id: '1' } as any);
+
+      const result = await service.importMovies(mockFile);
+      expect(result.imported).toBe(1);
+      expect(createSpy).toHaveBeenCalledTimes(1);
+
+      parseSpy.mockRestore();
     });
   });
 });

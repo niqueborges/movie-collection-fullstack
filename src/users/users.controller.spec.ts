@@ -42,4 +42,17 @@ describe('UsersController', () => {
       expect(mockUsersService.findById).toHaveBeenCalledWith('uuid');
     });
   });
+
+  describe('updateProfile', () => {
+    it('should call usersService.update and return mapped user', async () => {
+      const mockUser = { id: 'uuid', name: 'Updated', email: 'test@test.com' };
+      mockUsersService.update.mockResolvedValue(mockUser);
+
+      const result = await controller.updateProfile({ user: { id: 'uuid' } }, { name: 'Updated' } as any);
+
+      expect(result.id).toEqual(mockUser.id);
+      expect(result.name).toEqual(mockUser.name);
+      expect(mockUsersService.update).toHaveBeenCalledWith('uuid', { name: 'Updated' });
+    });
+  });
 });
