@@ -1,16 +1,26 @@
 import React from 'react';
-import { Search, User, Film } from 'lucide-react';
+import { Search, User, Film, LogOut } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import './Header.css';
 
 export function Header() {
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
     <header className="header glass">
       <div className="header-container">
         
-        <div className="logo-container">
+        <Link to="/" className="logo-container" style={{ textDecoration: 'none' }}>
           <Film className="logo-icon" size={28} strokeWidth={2.5} />
           <h1 className="logo">MovieCollection</h1>
-        </div>
+        </Link>
         
         <div className="search-bar">
           <Search className="search-icon" size={18} />
@@ -22,11 +32,29 @@ export function Header() {
         </div>
 
         <nav className="nav-actions">
-          <button className="btn-secondary">Sign Up</button>
-          <button className="btn-primary">
-            <User size={18} strokeWidth={2.5} />
-            Sign In
-          </button>
+          {isAuthenticated ? (
+            <>
+              <div className="user-profile">
+                <div className="avatar">
+                  {user?.name?.charAt(0).toUpperCase() || 'U'}
+                </div>
+                <span className="user-name">{user?.name}</span>
+              </div>
+              <button className="btn-secondary" onClick={handleLogout} title="Sign Out">
+                <LogOut size={18} />
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/register" className="btn-secondary" style={{ textDecoration: 'none', display: 'flex' }}>
+                Sign Up
+              </Link>
+              <Link to="/login" className="btn-primary" style={{ textDecoration: 'none' }}>
+                <User size={18} strokeWidth={2.5} />
+                Sign In
+              </Link>
+            </>
+          )}
         </nav>
 
       </div>
