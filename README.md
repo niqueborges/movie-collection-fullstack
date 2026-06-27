@@ -1,5 +1,7 @@
 # 🎬 Movie Collection App (Full-Stack)
 
+[![CI Pipeline](https://github.com/niqueborges/movie-collection-fullstack/actions/workflows/ci.yml/badge.svg)](https://github.com/niqueborges/movie-collection-fullstack/actions/workflows/ci.yml)
+
 A complete Full-Stack application for managing movies, personal watchlists, and user reviews. Built as a culmination of backend challenges and extended into a fully functional frontend with a stunning UI.
 
 - **Stack**: React + Vite + CSS (Frontend) | NestJS + PostgreSQL + TypeORM + JWT (Backend)
