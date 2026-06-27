@@ -3,7 +3,9 @@
 A complete Full-Stack application for managing movies, personal watchlists, and user reviews.
 
 - **Stack**: React + Vite + CSS (Frontend) | NestJS + PostgreSQL + TypeORM + JWT (Backend)
-- **Status**: Active (Personal Lab)
+- **Deadline**: 06/29/2026 by 5:30 PM
+- **Status**: Completed (Full-Stack Lab)
+- **Full Requirements**: [docs/requirements.md](./docs/requirements.md)
 
 ---
 
@@ -295,6 +297,7 @@ After starting the project locally, access:
 - Smart search bar integrated with API
 - Watchlist integration
 - Create and Edit movies with "Auto-fill via OMDB API"
+- Profile Page and Review components
 
 ### Authentication
 - User Entity and JWT authentication
@@ -302,7 +305,7 @@ After starting the project locally, access:
 - Authenticated user profile and updates
 
 ### Movies
-- Movie Entity (title, description, year, genre, duration in seconds)
+- Movie Entity (title, description, year, genre, duration in seconds, director)
 - Register, list, update and delete movies
 - Pagination, search by title, filter by genre/year, and sorting
 - Movie details with average rating and total reviews (public)
@@ -317,7 +320,6 @@ After starting the project locally, access:
 - Rate a movie (or update if it already exists)
 - List reviews of the authenticated user
 - Delete review and dynamically recalculate movie averages
-
 ### Integration & Architecture
 - Centralized exception handling, logging and DTO validation
 - Comprehensive Unit and End-to-End Test suites
