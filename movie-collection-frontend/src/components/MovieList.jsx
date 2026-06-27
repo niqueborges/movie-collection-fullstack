@@ -1,13 +1,14 @@
 import React from 'react';
+import { SearchX, Film } from 'lucide-react';
 import { MovieCard } from './MovieCard';
 import './MovieList.css';
 
-export function MovieList({ movies, loading, error }) {
+export function MovieList({ movies, loading, error, searchQuery = '' }) {
   if (loading) {
     return (
       <div className="state-container glass">
         <div className="spinner"></div>
-        <p>Carregando catálogo...</p>
+        <p>Loading catalog...</p>
       </div>
     );
   }
@@ -22,8 +23,20 @@ export function MovieList({ movies, loading, error }) {
 
   if (!movies || movies.length === 0) {
     return (
-      <div className="state-container glass">
-        <p>Nenhum filme encontrado na sua coleção.</p>
+      <div className="state-container empty-state glass">
+        {searchQuery ? (
+          <>
+            <SearchX size={48} className="empty-icon" strokeWidth={1.5} />
+            <h3>No results found</h3>
+            <p>We couldn't find any movies matching "{searchQuery}".</p>
+          </>
+        ) : (
+          <>
+            <Film size={48} className="empty-icon" strokeWidth={1.5} />
+            <h3>Your collection is empty</h3>
+            <p>Start adding some amazing movies to your catalog!</p>
+          </>
+        )}
       </div>
     );
   }

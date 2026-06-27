@@ -1,10 +1,10 @@
-# Movie Collection API
+# Movie Collection App (Full-Stack)
 
-REST API for managing movies, personal watchlists, and user reviews.
+A complete Full-Stack application for managing movies, personal watchlists, and user reviews.
 
-- **Stack**: NestJS + TypeScript + PostgreSQL + TypeORM + JWT
+- **Stack**: React + Vite + CSS (Frontend) | NestJS + PostgreSQL + TypeORM + JWT (Backend)
 - **Deadline**: 06/29/2026 by 5:30 PM
-- **Status**: Completed
+- **Status**: Completed (Full-Stack Lab)
 - **Full Requirements**: [docs/requirements.md](./docs/requirements.md)
 
 ---
@@ -32,8 +32,8 @@ REST API for managing movies, personal watchlists, and user reviews.
 ## Installation
 
 ```bash
-git clone https://github.com/niqueborges/movie-collection-api2.git
-cd movie-collection-api2
+git clone https://github.com/niqueborges/movie-collection-fullstack.git
+cd movie-collection-fullstack
 npm install
 ```
 
@@ -41,9 +41,16 @@ npm install
 
 ## Configuration
 
-Create the `.env` file from the example:
+Create the `.env` file for the backend:
 
 ```bash
+cp .env.example .env
+```
+
+Create the `.env` file for the frontend:
+
+```bash
+cd movie-collection-frontend
 cp .env.example .env
 ```
 
@@ -80,7 +87,7 @@ docker ps
 
 The container `movie_api_db` should appear with the status `Up`.
 
-### 2. Start the API
+### 2. Start the Backend API
 
 ```bash
 # Development (watch mode)
@@ -93,7 +100,19 @@ npm run start:prod
 
 The API will be available at `http://localhost:3000/api`.
 
-### 3. Run tests
+### 3. Start the Frontend (React)
+
+Open a new terminal window:
+
+```bash
+cd movie-collection-frontend
+npm install
+npm run dev
+```
+
+The frontend will be available at `http://localhost:5173`.
+
+### 4. Run tests
 
 ```bash
 npm run test          # unit tests
@@ -271,13 +290,22 @@ After starting the project locally, access:
 
 ## Features Overview
 
+### Frontend (React + Vite)
+- Modern Glassmorphism UI design
+- Context API for Auth State Management
+- Protected routes using `react-router-dom`
+- Smart search bar integrated with API
+- Watchlist integration
+- Create and Edit movies with "Auto-fill via OMDB API"
+- Profile Page and Review components
+
 ### Authentication
 - User Entity and JWT authentication
 - User registration and login
 - Authenticated user profile and updates
 
 ### Movies
-- Movie Entity (title, description, year, genre, duration in seconds)
+- Movie Entity (title, description, year, genre, duration in seconds, director)
 - Register, list, update and delete movies
 - Pagination, search by title, filter by genre/year, and sorting
 - Movie details with average rating and total reviews (public)
@@ -292,7 +320,6 @@ After starting the project locally, access:
 - Rate a movie (or update if it already exists)
 - List reviews of the authenticated user
 - Delete review and dynamically recalculate movie averages
-
 ### Integration & Architecture
 - Centralized exception handling, logging and DTO validation
 - Comprehensive Unit and End-to-End Test suites
@@ -304,7 +331,14 @@ After starting the project locally, access:
 ## Project structure
 
 ```
-src/
+movie-collection-frontend/  # React + Vite application
+  src/
+    components/       # Header, MovieCard, MovieList, ProtectedRoute
+    contexts/         # AuthContext
+    pages/            # Home, Login, Register, MovieDetails, Watchlist, CreateMovie, EditMovie
+    services/         # api.js
+  .env.example
+src/                        # NestJS Backend API
   auth/
     dto/              # LoginDto, RegisterDto
     guards/           # JwtAuthGuard
@@ -377,3 +411,9 @@ docker-compose.yml
 | `DATABASE_PASSWORD` | Database password | `your_password`       |
 | `JWT_SECRET`        | JWT secret key    | long and random string  |
 | `JWT_EXPIRATION`    | Token expiration  | `1d`, `7d`, `12h` |
+
+### Frontend Variables (`movie-collection-frontend/.env`)
+
+| Variable | Description | Example |
+| --- | --- | --- |
+| `VITE_OMDB_API_KEY` | OMDB API Key for auto-fill feature | `34d64019` |

@@ -1,37 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 import { Header } from './components/Header';
-import { MovieList } from './components/MovieList';
-import { fetchMovies } from './services/api';
+import { Home } from './pages/Home';
+import { Login } from './pages/Login';
+import { Register } from './pages/Register';
+import { MovieDetails } from './pages/MovieDetails';
+import { Watchlist } from './pages/Watchlist';
+import { CreateMovie } from './pages/CreateMovie';
+import { EditMovie } from './pages/EditMovie';
+import { Profile } from './pages/Profile';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    async function loadData() {
-      try {
-        setLoading(true);
-        const data = await fetchMovies();
-        setMovies(data);
-        setError(null);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadData();
-  }, []);
-
   return (
-    <>
-      <Header />
-      <main style={{ paddingBottom: '4rem' }}>
-        <MovieList movies={movies} loading={loading} error={error} />
-      </main>
-    </>
+    <AuthProvider>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/movies/new" element={<ProtectedRoute><CreateMovie /></ProtectedRoute>} />
+          <Route path="/movies/:id/edit" element={<ProtectedRoute><EditMovie /></ProtectedRoute>} />
+          <Route path="/movies/:id" element={<MovieDetails />} />
+          <Route path="/watchlist" element={<ProtectedRoute><Watchlist /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

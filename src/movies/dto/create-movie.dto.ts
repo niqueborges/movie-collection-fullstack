@@ -3,6 +3,7 @@ import {
   IsInt,
   IsNotEmpty,
   IsPositive,
+  IsOptional,
   IsString,
   Max,
   MaxLength,
@@ -15,6 +16,12 @@ export class CreateMovieDto {
   @IsNotEmpty()
   @MaxLength(200)
   title: string;
+
+  @ApiProperty({ example: 'Christopher Nolan', description: 'Director of the movie', required: false })
+  @IsString()
+  @IsOptional()
+  @MaxLength(150)
+  director?: string;
 
   @ApiProperty({
     example: 'A thief who steals corporate secrets...',

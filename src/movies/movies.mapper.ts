@@ -3,6 +3,7 @@ import { Movie } from './entities/movie.entity';
 export class MovieResponseDto {
   id: string;
   title: string;
+  director?: string;
   description: string;
   releaseYear: number;
   genre: string;
@@ -18,6 +19,7 @@ export class MoviesMapper {
     const dto = new MovieResponseDto();
     dto.id = entity.id;
     dto.title = entity.title;
+    dto.director = entity.director;
     dto.description = entity.description;
     dto.releaseYear = entity.releaseYear;
     dto.genre = entity.genre;
