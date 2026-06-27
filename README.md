@@ -1,419 +1,130 @@
-# Movie Collection App (Full-Stack)
+# 🎬 Movie Collection App (Full-Stack)
 
-A complete Full-Stack application for managing movies, personal watchlists, and user reviews.
+A complete Full-Stack application for managing movies, personal watchlists, and user reviews. Built as a culmination of backend challenges and extended into a fully functional frontend with a stunning UI.
 
 - **Stack**: React + Vite + CSS (Frontend) | NestJS + PostgreSQL + TypeORM + JWT (Backend)
-- **Deadline**: 06/29/2026 by 5:30 PM
 - **Status**: Completed (Full-Stack Lab)
-- **Full Requirements**: [docs/requirements.md](./docs/requirements.md)
+- **Original Requirements**: [docs/requirements.md](./docs/requirements.md)
 
 ---
 
-## Summary
+## 🌟 Highlights & Features
 
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Running the project](#running-the-project)
-- [Implemented endpoints](#implemented-endpoints)
-- [Next steps](#next-steps)
-- [Project structure](#project-structure)
+This project was evolved from a backend-only REST API challenge into a complete product.
+
+### 🎨 Frontend (React + Vite)
+- **Modern Glassmorphism UI**: A sleek, frosted-glass design system with responsive animations.
+- **Context API Auth**: Seamless authentication state management across the app.
+- **Protected Routes**: Security on the frontend using `react-router-dom` to protect sensitive views.
+- **Smart Search Bar**: Instant local and API-driven filtering.
+- **OMDB API Auto-fill (Magic Button 🪄)**: Automatically fetches and fills in movie details (Director, Year, Runtime, Plot, Genre) when registering or editing movies.
+- **Personal Watchlist**: Manage your favorite movies easily.
+- **User Profile & Reviews Panel**: Interactive 0-10 star rating system to review movies, with a dedicated user dashboard to track past ratings.
+
+### ⚙️ Backend (NestJS)
+- **Robust Architecture**: Centralized exception handling, logging, and DTO validation (`class-validator`).
+- **Authentication**: JWT-based authentication with encrypted passwords (bcrypt).
+- **Relational Data (PostgreSQL + TypeORM)**: Entities for Users, Movies, Watchlist, and Reviews.
+- **Swagger Documentation**: Interactive API documentation generated automatically.
 
 ---
 
-## Requirements
+## 🚀 Installation & Setup
 
-- Node.js v18 or higher
-- npm v8 or higher
-- Docker Desktop
+### Requirements
+- Node.js v18+
+- npm v8+
+- Docker Desktop (for the database)
 
----
-
-## Installation
-
+### 1. Clone the repository
 ```bash
 git clone https://github.com/niqueborges/movie-collection-fullstack.git
 cd movie-collection-fullstack
-npm install
 ```
 
----
-
-## Configuration
-
-Create the `.env` file for the backend:
-
+### 2. Configuration
+Create the `.env` file for the backend in the root folder:
 ```bash
 cp .env.example .env
 ```
+*(Update `DATABASE_PASSWORD` and `JWT_SECRET` as needed).*
 
 Create the `.env` file for the frontend:
-
 ```bash
 cd movie-collection-frontend
 cp .env.example .env
 ```
-
-Fill in the values in `.env`:
-
-```env
-PORT=3000
-
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-DATABASE_NAME=movie_api
-DATABASE_USER=postgres
-DATABASE_PASSWORD=your_password_here
-
-JWT_SECRET=a_long_and_random_string
-JWT_EXPIRATION=1d
-```
+*(You will need a free API Key from [OMDB API](http://www.omdbapi.com/) to use the Auto-fill feature. Place it in `VITE_OMDB_API_KEY`).*
 
 ---
 
-## Running the project
+## 🖥️ Running the Project
 
-### 1. Start the database
-
+### Step 1: Start the Database
+From the root folder, run:
 ```bash
 docker compose up -d
 ```
+*(Wait a few seconds for the `movie_api_db` container to be fully up).*
 
-Verify if it's up:
-
+### Step 2: Start the Backend API
+From the root folder, run:
 ```bash
-docker ps
-```
-
-The container `movie_api_db` should appear with the status `Up`.
-
-### 2. Start the Backend API
-
-```bash
-# Development (watch mode)
+npm install
 npm run start:dev
-
-# Production
-npm run build
-npm run start:prod
 ```
+*The API will be available at `http://localhost:3000/api`.*
+*Swagger Docs available at `http://localhost:3000/api/docs`.*
 
-The API will be available at `http://localhost:3000/api`.
-
-### 3. Start the Frontend (React)
-
+### Step 3: Start the Frontend React App
 Open a new terminal window:
-
 ```bash
 cd movie-collection-frontend
 npm install
 npm run dev
 ```
-
-The frontend will be available at `http://localhost:5173`.
-
-### 4. Run tests
-
-```bash
-npm run test          # unit tests
-npm run test:cov      # with coverage
-```
-
-### 4. Documentation (Swagger)
-
-The API has auto-generated interactive documentation.
-After starting the project locally, access:
-`http://localhost:3000/api/docs`
-
-> To test in Postman/Insomnia, you can import the `docs/swagger.json` file which already contains the mapped routes and DTOs.
+*The UI will be available at `http://localhost:5173`.*
 
 ---
 
-## Implemented endpoints
+## 📚 API Endpoints Summary
 
 > Base URL: `http://localhost:3000/api`
->
-> Protected endpoints require the header: `Authorization: Bearer <token>`
+> Protected endpoints require: `Authorization: Bearer <token>`
 
-### Authentication
-
-| Method | Route              | Protected | Description        |
-| ------ | ------------------ | --------- | ------------------ |
-| POST   | `/auth/register` | No        | User registration  |
-| POST   | `/auth/login`    | No        | Login, returns JWT |
-
-#### POST /auth/register
-
-```json
-// Body
-{
-  "name": "Ana Silva",
-  "email": "ana@email.com",
-  "password": "123456"
-}
-
-// Response 201
-{
-  "user": {
-    "id": "uuid",
-    "name": "Ana Silva",
-    "email": "ana@email.com"
-  },
-  "access_token": "eyJhbGci..."
-}
-```
-
-#### POST /auth/login
-
-```json
-// Body
-{
-  "email": "ana@email.com",
-  "password": "123456"
-}
-
-// Response 200
-{
-  "user": {
-    "id": "uuid",
-    "name": "Ana Silva",
-    "email": "ana@email.com"
-  },
-  "access_token": "eyJhbGci..."
-}
-```
-
-### Users
-
-| Method | Route         | Protected | Description                |
-| ------ | ------------- | --------- | -------------------------- |
-| GET    | `/users/me` | JWT       | Authenticated user profile |
-| PATCH  | `/users/me` | JWT       | Update profile name        |
-
-#### GET /users/me
-
-```json
-// Response 200
-{
-  "id": "uuid",
-  "name": "Ana Silva",
-  "email": "ana@email.com",
-  "createdAt": "2026-06-23T15:14:03.473Z",
-  "updatedAt": "2026-06-23T15:14:03.473Z"
-}
-```
-
-#### PATCH /users/me
-
-```json
-// Body
-{
-  "name": "Ana Souza"
-}
-
-// Response 200
-{
-  "id": "uuid",
-  "name": "Ana Souza",
-  "email": "ana@email.com",
-  "createdAt": "2026-06-23T15:14:03.473Z",
-  "updatedAt": "2026-06-23T15:30:00.000Z"
-}
-```
-
-### Movies
-
-| Method | Route           | Protected | Description                             |
-| ------ | --------------- | --------- | --------------------------------------- |
-| POST   | `/movies`     | JWT       | Register movie                          |
-| GET    | `/movies`     | No        | List movies with pagination and filters |
-| GET    | `/movies/:id` | No        | Movie details                           |
-| PUT    | `/movies/:id` | JWT       | Update movie information                |
-| DELETE | `/movies/:id` | JWT       | Delete a movie                          |
-
-### Watchlist
-
-| Method | Route                 | Protected | Description                            |
-| ------ | --------------------- | --------- | -------------------------------------- |
-| POST   | `/watchlist`          | JWT       | Add movie to personal watchlist        |
-| GET    | `/watchlist`          | JWT       | List movies from the watchlist         |
-| DELETE | `/watchlist/:movieId` | JWT       | Remove movie from the watchlist        |
-
-#### POST /watchlist
-
-```json
-// Body
-{
-  "movieId": "uuid"
-}
-
-// Response 201
-{
-  "id": "uuid",
-  "userId": "uuid",
-  "movieId": "uuid",
-  "createdAt": "2026-06-23T15:14:03.473Z"
-}
-```
-
-### Reviews
-
-| Method | Route           | Protected | Description                               |
-| ------ | --------------- | --------- | ----------------------------------------- |
-| POST   | `/reviews`      | JWT       | Rate a movie or update existing review    |
-| GET    | `/reviews/me`   | JWT       | List reviews of the authenticated user    |
-| PATCH  | `/reviews/:id`  | JWT       | Update your review rating/comment         |
-| DELETE | `/reviews/:id`  | JWT       | Delete your review                        |
-
-#### POST /reviews
-
-```json
-// Body
-{
-  "movieId": "uuid",
-  "rating": 8.5,
-  "comment": "Great movie!"
-}
-
-// Response 201
-{
-  "id": "uuid",
-  "movieId": "uuid",
-  "userId": "uuid",
-  "rating": 8.5,
-  "comment": "Great movie!",
-  "createdAt": "2026-06-23T15:14:03.473Z"
-}
-```
+- **Auth**: `POST /auth/register`, `POST /auth/login`
+- **Users**: `GET /users/me`, `PATCH /users/me`
+- **Movies**: 
+  - `GET /movies` (Public Catalog)
+  - `GET /movies/:id` (Public Details)
+  - `POST /movies`, `PUT /movies/:id`, `DELETE /movies/:id` (Protected CRUD)
+- **Watchlist**: `GET /watchlist`, `POST /watchlist`, `DELETE /watchlist/:movieId`
+- **Reviews**: 
+  - `POST /reviews` (Create or Update your review and rating)
+  - `GET /reviews/me` (List your history)
+  - `DELETE /reviews/:id` (Delete review)
 
 ---
 
-## Features Overview
-
-### Frontend (React + Vite)
-- Modern Glassmorphism UI design
-- Context API for Auth State Management
-- Protected routes using `react-router-dom`
-- Smart search bar integrated with API
-- Watchlist integration
-- Create and Edit movies with "Auto-fill via OMDB API"
-- Profile Page and Review components
-
-### Authentication
-- User Entity and JWT authentication
-- User registration and login
-- Authenticated user profile and updates
-
-### Movies
-- Movie Entity (title, description, year, genre, duration in seconds, director)
-- Register, list, update and delete movies
-- Pagination, search by title, filter by genre/year, and sorting
-- Movie details with average rating and total reviews (public)
-
-### Watchlist
-- WatchlistItem Entity
-- Add/remove movies to personal watchlist
-- List movies from the watchlist (paginated)
-
-### Reviews
-- Review Entity (rating from 0 to 10, decimal)
-- Rate a movie (or update if it already exists)
-- List reviews of the authenticated user
-- Delete review and dynamically recalculate movie averages
-### Integration & Architecture
-- Centralized exception handling, logging and DTO validation
-- Comprehensive Unit and End-to-End Test suites
-- Containerized with Docker
-- Swagger interactive documentation
-
----
-
-## Project structure
+## 📂 Project Structure
 
 ```
-movie-collection-frontend/  # React + Vite application
-  src/
-    components/       # Header, MovieCard, MovieList, ProtectedRoute
-    contexts/         # AuthContext
-    pages/            # Home, Login, Register, MovieDetails, Watchlist, CreateMovie, EditMovie
-    services/         # api.js
-  .env.example
-src/                        # NestJS Backend API
-  auth/
-    dto/              # LoginDto, RegisterDto
-    guards/           # JwtAuthGuard
-    strategies/       # JwtStrategy
-    auth.controller.spec.ts
-    auth.controller.ts
-    auth.module.ts
-    auth.service.spec.ts
-    auth.service.ts
-  users/
-    dto/              # CreateUserDto, UpdateUserDto
-    entities/         # User
-    users.controller.spec.ts
-    users.controller.ts
-    users.mapper.ts
-    users.module.ts
-    users.service.spec.ts
-    users.service.ts
-  movies/
-    dto/              # CreateMovieDto, QueryMovieDto, UpdateMovieDto
-    entities/         # Movie
-    movies.controller.spec.ts
-    movies.controller.ts
-    movies.mapper.ts
-    movies.module.ts
-    movies.service.spec.ts
-    movies.service.ts
-  common/
-    interceptors/     # LoggingInterceptor
-  watchlist/
-    dto/              # CreateWatchlistDto, PaginationWatchlistDto
-    entities/         # Watchlist
-    watchlist.controller.spec.ts
-    watchlist.controller.ts
-    watchlist.mapper.ts
-    watchlist.module.ts
-    watchlist.service.spec.ts
-    watchlist.service.ts
-  reviews/
-    dto/              # CreateReviewDto, ResponseReviewDto, UpdateReviewDto
-    entities/         # Review
-    mappers/          # ReviewMapper
-    reviews.controller.ts
-    reviews.module.ts
-    reviews.service.spec.ts
-    reviews.service.ts
-  app.controller.spec.ts
-  app.controller.ts
-  app.module.ts
-  app.service.ts
-  main.ts
-docs/
-  requirements.md     # original bootcamp requirements
-  swagger.json        # documentation export for easy importing
-docker-compose.yml
-.env.example
+movie-collection-fullstack/
+├── movie-collection-frontend/  # React UI
+│   ├── src/
+│   │   ├── components/         # Reusable UI (Header, MovieCard, ProtectedRoute)
+│   │   ├── contexts/           # AuthContext
+│   │   ├── pages/              # Views (Home, Login, Profile, MovieDetails, etc.)
+│   │   └── services/           # api.js (API Integration layer)
+│   └── .env.example
+├── src/                        # NestJS API Backend
+│   ├── auth/                   # Authentication Module
+│   ├── users/                  # Users Module
+│   ├── movies/                 # Movies Catalog Module
+│   ├── watchlist/              # Personal Watchlist Module
+│   ├── reviews/                # Reviews & Rating Module
+│   └── main.ts
+├── docs/                       # Original requirements & Swagger JSON
+├── docker-compose.yml          # PostgreSQL Database container
+└── .env.example
 ```
-
----
-
-## Environment variables
-
-| Variable              | Description       | Example                 |
-| --------------------- | ----------------- | ----------------------- |
-| `PORT`              | API Port          | `3000`                |
-| `DATABASE_HOST`     | Database host     | `localhost`           |
-| `DATABASE_PORT`     | Database port     | `5432`                |
-| `DATABASE_NAME`     | Database name     | `movie_api`           |
-| `DATABASE_USER`     | Database user     | `postgres`            |
-| `DATABASE_PASSWORD` | Database password | `your_password`       |
-| `JWT_SECRET`        | JWT secret key    | long and random string  |
-| `JWT_EXPIRATION`    | Token expiration  | `1d`, `7d`, `12h` |
-
-### Frontend Variables (`movie-collection-frontend/.env`)
-
-| Variable | Description | Example |
-| --- | --- | --- |
-| `VITE_OMDB_API_KEY` | OMDB API Key for auto-fill feature | `34d64019` |
