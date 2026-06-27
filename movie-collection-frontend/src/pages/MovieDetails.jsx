@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Star, Clock, Calendar, Film, BookmarkPlus, BookmarkMinus, ArrowLeft } from 'lucide-react';
+import { Star, Clock, Calendar, Film, BookmarkPlus, BookmarkMinus, ArrowLeft, Edit } from 'lucide-react';
 import { fetchMovieById, addToWatchlist, removeFromWatchlist, fetchWatchlist } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import './MovieDetails.css';
@@ -123,7 +123,18 @@ export function MovieDetails() {
             </div>
           </div>
           
-          <div className="details-actions">
+          <div className="details-actions" style={{ display: 'flex', gap: '1rem' }}>
+            {isAuthenticated && (
+              <button 
+                className="btn-secondary"
+                onClick={() => navigate(`/movies/${id}/edit`)}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+              >
+                <Edit size={18} />
+                Edit Movie
+              </button>
+            )}
+            
             <button 
               className={`btn-watchlist ${isInWatchlist ? 'remove' : 'add'}`}
               onClick={handleWatchlistToggle}

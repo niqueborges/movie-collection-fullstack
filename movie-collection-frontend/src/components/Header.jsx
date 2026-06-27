@@ -1,5 +1,5 @@
-import React from 'react';
-import { Search, User, Film, LogOut, Bookmark } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, User, Film, LogOut, Bookmark, PlusCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './Header.css';
@@ -8,9 +8,21 @@ export function Header() {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
+  const [searchTerm, setSearchTerm] = useState('');
+
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  const handleSearch = (e) => {
+    if (e.key === 'Enter') {
+      if (searchTerm.trim()) {
+        navigate(`/?search=${encodeURIComponent(searchTerm.trim())}`);
+      } else {
+        navigate('/');
+      }
+    }
   };
 
   return (
@@ -26,14 +38,21 @@ export function Header() {
           <Search className="search-icon" size={18} />
           <input 
             type="text" 
-            placeholder="Search movies, genres or directors..." 
+            placeholder="Search movies..." 
             className="search-input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleSearch}
           />
         </div>
 
         <nav className="nav-actions">
           {isAuthenticated ? (
             <>
+              <Link to="/movies/new" className="btn-primary" style={{ textDecoration: 'none', display: 'flex', gap: '0.5rem', alignItems: 'center', marginRight: '0.5rem' }}>
+                <PlusCircle size={18} />
+                Add Movie
+              </Link>
               <Link to="/watchlist" className="btn-secondary" style={{ textDecoration: 'none', display: 'flex', gap: '0.5rem', alignItems: 'center', marginRight: '1rem' }}>
                 <Bookmark size={18} />
                 Watchlist

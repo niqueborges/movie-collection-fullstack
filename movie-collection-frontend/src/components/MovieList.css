@@ -24,6 +24,23 @@
   color: var(--danger-color);
 }
 
+.empty-state h3 {
+  font-size: 1.5rem;
+  color: white;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.empty-state p {
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+.empty-icon {
+  color: #818cf8;
+  opacity: 0.8;
+  filter: drop-shadow(0 0 10px rgba(129, 140, 248, 0.4));
+}
+
 .spinner {
   width: 40px;
   height: 40px;

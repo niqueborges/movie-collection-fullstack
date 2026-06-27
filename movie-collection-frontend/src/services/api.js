@@ -9,9 +9,12 @@ const getHeaders = () => {
   };
 };
 
-export async function fetchMovies() {
+export async function fetchMovies(searchQuery = '') {
   try {
-    const response = await fetch(`${BASE_URL}/movies`);
+    const url = searchQuery 
+      ? `${BASE_URL}/movies?title=${encodeURIComponent(searchQuery)}`
+      : `${BASE_URL}/movies`;
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Error ${response.status}: Failed to fetch movies.`);
     }
@@ -108,4 +111,54 @@ export async function removeFromWatchlist(movieId) {
   });
   if (!response.ok) throw new Error('Failed to remove from watchlist');
   return true;
+}
+
+export async function createMovie(movieData) {
+  const response = await fetch(`${BASE_URL}/movies`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify(movieData),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const errorMsg = Array.isArray(data.message) ? data.message.join(', ') : data.message;
+    throw new Error(errorMsg || 'Failed to create movie');
+  }
+
+  return data;
+}
+
+export async function updateMovie(id, movieData) {
+  const response = await fetch(`${BASE_URL}/movies/${id}`, {
+    method: 'PUT',
+    headers: getHeaders(),
+    body: JSON.stringify(movieData),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const errorMsg = Array.isArray(data.message) ? data.message.join(', ') : data.message;
+    throw new Error(errorMsg || 'Failed to update movie');
+  }
+
+  return data;
+}
+
+export async function fetchOmdbData(title) {
+  const apiKey = import.meta.env.VITE_OMDB_API_KEY;
+  if (!apiKey) {
+    throw new Error('OMDB API key is missing. Please configure VITE_OMDB_API_KEY in .env');
+  }
+  
+  const response = await fetch(`http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${apiKey}`);
+  const data = await response.json();
+  
+  if (data.Response === 'False') {
+    throw new Error(data.Error || 'Movie not found on OMDB');
+  }
+  
+  return data;
 }

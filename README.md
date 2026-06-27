@@ -39,9 +39,16 @@ npm install
 
 ## Configuration
 
-Create the `.env` file from the example:
+Create the `.env` file for the backend:
 
 ```bash
+cp .env.example .env
+```
+
+Create the `.env` file for the frontend:
+
+```bash
+cd movie-collection-frontend
 cp .env.example .env
 ```
 
@@ -281,6 +288,14 @@ After starting the project locally, access:
 
 ## Features Overview
 
+### Frontend (React + Vite)
+- Modern Glassmorphism UI design
+- Context API for Auth State Management
+- Protected routes using `react-router-dom`
+- Smart search bar integrated with API
+- Watchlist integration
+- Create and Edit movies with "Auto-fill via OMDB API"
+
 ### Authentication
 - User Entity and JWT authentication
 - User registration and login
@@ -315,6 +330,12 @@ After starting the project locally, access:
 
 ```
 movie-collection-frontend/  # React + Vite application
+  src/
+    components/       # Header, MovieCard, MovieList, ProtectedRoute
+    contexts/         # AuthContext
+    pages/            # Home, Login, Register, MovieDetails, Watchlist, CreateMovie, EditMovie
+    services/         # api.js
+  .env.example
 src/                        # NestJS Backend API
   auth/
     dto/              # LoginDto, RegisterDto
@@ -388,3 +409,9 @@ docker-compose.yml
 | `DATABASE_PASSWORD` | Database password | `your_password`       |
 | `JWT_SECRET`        | JWT secret key    | long and random string  |
 | `JWT_EXPIRATION`    | Token expiration  | `1d`, `7d`, `12h` |
+
+### Frontend Variables (`movie-collection-frontend/.env`)
+
+| Variable | Description | Example |
+| --- | --- | --- |
+| `VITE_OMDB_API_KEY` | OMDB API Key for auto-fill feature | `34d64019` |

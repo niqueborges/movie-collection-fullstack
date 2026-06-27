@@ -7,6 +7,8 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { MovieDetails } from './pages/MovieDetails';
 import { Watchlist } from './pages/Watchlist';
+import { CreateMovie } from './pages/CreateMovie';
+import { EditMovie } from './pages/EditMovie';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/movies/new" element={<ProtectedRoute><CreateMovie /></ProtectedRoute>} />
+          <Route path="/movies/:id/edit" element={<ProtectedRoute><EditMovie /></ProtectedRoute>} />
           <Route path="/movies/:id" element={<MovieDetails />} />
           <Route path="/watchlist" element={<ProtectedRoute><Watchlist /></ProtectedRoute>} />
         </Routes>
