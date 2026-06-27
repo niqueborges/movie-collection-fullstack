@@ -4,8 +4,11 @@ export class MovieResponseDto {
   @ApiProperty()
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Inception' })
   title: string;
+
+  @ApiProperty({ example: 'Christopher Nolan', required: false })
+  director?: string;
 
   @ApiProperty()
   description: string;

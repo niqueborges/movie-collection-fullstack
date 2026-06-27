@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Film, Calendar, Clock, Type, AlignLeft, AlertCircle, Save, Wand2 } from 'lucide-react';
+import { Film, Calendar, Clock, Type, AlignLeft, AlertCircle, Save, Wand2, User } from 'lucide-react';
 import { fetchMovieById, updateMovie, fetchOmdbData } from '../services/api';
 import './CreateMovie.css'; // Reusing styles from CreateMovie
 
@@ -15,6 +15,7 @@ export function EditMovie() {
 
   const [formData, setFormData] = useState({
     title: '',
+    director: '',
     genre: '',
     releaseYear: '',
     durationMinutes: '',
@@ -27,6 +28,7 @@ export function EditMovie() {
         const movie = await fetchMovieById(id);
         setFormData({
           title: movie.title || '',
+          director: movie.director || '',
           genre: movie.genre || '',
           releaseYear: movie.releaseYear || '',
           durationMinutes: movie.durationSeconds ? Math.round(movie.durationSeconds / 60) : '',
@@ -63,6 +65,7 @@ export function EditMovie() {
       setFormData(prev => ({
         ...prev,
         title: omdbData.Title || prev.title,
+        director: omdbData.Director && omdbData.Director !== 'N/A' ? omdbData.Director : prev.director,
         genre: omdbData.Genre ? omdbData.Genre.split(',')[0].trim() : prev.genre, // take first genre
         releaseYear: omdbData.Year ? parseInt(omdbData.Year, 10) : prev.releaseYear,
         durationMinutes: parsedMinutes || prev.durationMinutes,
@@ -98,6 +101,7 @@ export function EditMovie() {
 
       const movieData = {
         title: formData.title,
+        director: formData.director || undefined,
         description: formData.description,
         genre: formData.genre,
         releaseYear: year,
@@ -170,6 +174,19 @@ export function EditMovie() {
             <small style={{ color: '#94a3b8', marginTop: '0.25rem' }}>
               Type the title and click "Auto-Fill" to fetch real data from OMDB.
             </small>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="director"><User size={16} /> Director (Optional)</label>
+            <input
+              type="text"
+              id="director"
+              name="director"
+              value={formData.director}
+              onChange={handleChange}
+              placeholder="e.g. Quentin Tarantino"
+              maxLength={150}
+            />
           </div>
 
           <div className="form-row">

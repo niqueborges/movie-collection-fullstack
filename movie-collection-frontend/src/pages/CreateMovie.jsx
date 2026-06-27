@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Film, Calendar, Clock, Type, AlignLeft, AlertCircle, Save } from 'lucide-react';
+import { Film, Calendar, Clock, Type, AlignLeft, AlertCircle, Save, User } from 'lucide-react';
 import { createMovie } from '../services/api';
 import './CreateMovie.css';
 
@@ -11,6 +11,7 @@ export function CreateMovie() {
 
   const [formData, setFormData] = useState({
     title: '',
+    director: '',
     genre: '',
     releaseYear: '',
     durationMinutes: '',
@@ -47,6 +48,7 @@ export function CreateMovie() {
       // Convert minutes to seconds for the API
       const movieData = {
         title: formData.title,
+        director: formData.director || undefined,
         description: formData.description,
         genre: formData.genre,
         releaseYear: year,
@@ -92,6 +94,19 @@ export function CreateMovie() {
               placeholder="e.g. Inception"
               maxLength={200}
               required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="director"><User size={16} /> Director (Optional)</label>
+            <input
+              type="text"
+              id="director"
+              name="director"
+              value={formData.director}
+              onChange={handleChange}
+              placeholder="e.g. Christopher Nolan"
+              maxLength={150}
             />
           </div>
 

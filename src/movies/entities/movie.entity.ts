@@ -22,6 +22,10 @@ export class Movie {
   @Column({ type: 'varchar', length: 200 })
   title: string;
 
+  @ApiProperty({ example: 'Christopher Nolan', description: 'Director of the movie', nullable: true })
+  @Column({ type: 'varchar', length: 150, nullable: true })
+  director: string;
+
   @ApiProperty({
     example: 'A thief who steals corporate secrets...',
     description: 'The description or synopsis of the movie',
