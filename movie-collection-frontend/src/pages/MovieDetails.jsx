@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Star, Clock, Calendar, Film, BookmarkPlus, BookmarkMinus, ArrowLeft, Edit } from 'lucide-react';
-import { fetchMovieById, addToWatchlist, removeFromWatchlist, fetchWatchlist } from '../services/api';
+import { Star, Clock, Calendar, Film, BookmarkPlus, BookmarkMinus, ArrowLeft, Edit, MessageSquare } from 'lucide-react';
+import { fetchMovieById, addToWatchlist, removeFromWatchlist, fetchWatchlist, fetchMyReviews, createOrUpdateReview } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import './MovieDetails.css';
 
@@ -15,6 +15,12 @@ export function MovieDetails() {
   const [error, setError] = useState(null);
   const [isInWatchlist, setIsInWatchlist] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
+
+  // Review states
+  const [userReview, setUserReview] = useState(null);
+  const [rating, setRating] = useState(10);
+  const [comment, setComment] = useState('');
+  const [reviewLoading, setReviewLoading] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -44,6 +50,18 @@ export function MovieDetails() {
             }
           } catch (err) {
             console.error('Could not fetch watchlist to check status', err);
+          }
+
+          try {
+            const reviews = await fetchMyReviews();
+            const existingReview = reviews.find(r => r.movieId === id);
+            if (existingReview) {
+              setUserReview(existingReview);
+              setRating(existingReview.rating);
+              setComment(existingReview.comment || '');
+            }
+          } catch (err) {
+            console.error('Could not fetch reviews', err);
           }
         }
       } catch (err) {
@@ -75,6 +93,23 @@ export function MovieDetails() {
       alert(err.message || 'Failed to update watchlist');
     } finally {
       setActionLoading(false);
+    }
+  };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    try {
+      setReviewLoading(true);
+      const newReview = await createOrUpdateReview({ movieId: id, rating: Number(rating), comment });
+      setUserReview(newReview);
+      
+      // refresh movie to get new average rating
+      const updatedMovie = await fetchMovieById(id);
+      setMovie(updatedMovie);
+    } catch (err) {
+      alert(err.message || 'Failed to submit review');
+    } finally {
+      setReviewLoading(false);
     }
   };
 
@@ -181,6 +216,52 @@ export function MovieDetails() {
             </div>
           </div>
         </div>
+
+        {isAuthenticated && (
+          <div className="review-section" style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+            <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+              <MessageSquare size={20} />
+              {userReview ? 'Your Review' : 'Rate this Movie'}
+            </h2>
+            <form onSubmit={handleSubmitReview} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: 'rgba(30,41,59,0.5)', padding: '1.5rem', borderRadius: '0.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <label htmlFor="rating" style={{ fontWeight: 'bold' }}>Rating (0 - 10):</label>
+                <input 
+                  type="number" 
+                  id="rating"
+                  min="0" 
+                  max="10" 
+                  step="0.1" 
+                  value={rating} 
+                  onChange={e => setRating(e.target.value)}
+                  style={{ width: '80px', padding: '0.5rem', borderRadius: '0.25rem', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.2)', color: 'white' }}
+                  required
+                />
+                <Star size={20} fill="#f59e0b" color="#f59e0b" />
+              </div>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <label htmlFor="comment" style={{ fontWeight: 'bold' }}>Comment:</label>
+                <textarea 
+                  id="comment"
+                  value={comment}
+                  onChange={e => setComment(e.target.value)}
+                  placeholder="What did you think of the movie?"
+                  style={{ minHeight: '80px', padding: '0.75rem', borderRadius: '0.25rem', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.2)', color: 'white', resize: 'vertical' }}
+                />
+              </div>
+
+              <button 
+                type="submit" 
+                className="btn-submit" 
+                disabled={reviewLoading}
+                style={{ alignSelf: 'flex-start', marginTop: '0.5rem' }}
+              >
+                {reviewLoading ? 'Saving...' : userReview ? 'Update Review' : 'Submit Review'}
+              </button>
+            </form>
+          </div>
+        )}
       </div>
     </main>
   );

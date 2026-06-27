@@ -162,3 +162,45 @@ export async function fetchOmdbData(title) {
   
   return data;
 }
+
+export async function fetchMyReviews() {
+  const response = await fetch(`${BASE_URL}/reviews/me`, {
+    headers: getHeaders(),
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch reviews');
+  }
+  
+  return await response.json();
+}
+
+export async function createOrUpdateReview(reviewData) {
+  const response = await fetch(`${BASE_URL}/reviews`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify(reviewData),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const errorMsg = Array.isArray(data.message) ? data.message.join(', ') : data.message;
+    throw new Error(errorMsg || 'Failed to submit review');
+  }
+
+  return data;
+}
+
+export async function deleteReview(id) {
+  const response = await fetch(`${BASE_URL}/reviews/${id}`, {
+    method: 'DELETE',
+    headers: getHeaders(),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete review');
+  }
+
+  return true;
+}

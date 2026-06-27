@@ -53,9 +53,13 @@ export function Header() {
                 <PlusCircle size={18} />
                 Add Movie
               </Link>
-              <Link to="/watchlist" className="btn-secondary" style={{ textDecoration: 'none', display: 'flex', gap: '0.5rem', alignItems: 'center', marginRight: '1rem' }}>
+              <Link to="/watchlist" className="btn-secondary" style={{ textDecoration: 'none', display: 'flex', gap: '0.5rem', alignItems: 'center', marginRight: '0.5rem' }}>
                 <Bookmark size={18} />
                 Watchlist
+              </Link>
+              <Link to="/profile" className="btn-secondary" style={{ textDecoration: 'none', display: 'flex', gap: '0.5rem', alignItems: 'center', marginRight: '1rem' }}>
+                <User size={18} />
+                Profile
               </Link>
               <div className="user-profile">
                 <div className="avatar">

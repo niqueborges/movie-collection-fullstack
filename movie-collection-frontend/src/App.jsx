@@ -9,6 +9,7 @@ import { MovieDetails } from './pages/MovieDetails';
 import { Watchlist } from './pages/Watchlist';
 import { CreateMovie } from './pages/CreateMovie';
 import { EditMovie } from './pages/EditMovie';
+import { Profile } from './pages/Profile';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/movies/:id/edit" element={<ProtectedRoute><EditMovie /></ProtectedRoute>} />
           <Route path="/movies/:id" element={<MovieDetails />} />
           <Route path="/watchlist" element={<ProtectedRoute><Watchlist /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         </Routes>
       </Router>
     </AuthProvider>
