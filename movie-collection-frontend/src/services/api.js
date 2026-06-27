@@ -74,3 +74,38 @@ export async function fetchCurrentUser() {
 
   return await response.json();
 }
+
+export async function fetchMovieById(id) {
+  const response = await fetch(`${BASE_URL}/movies/${id}`, {
+    headers: getHeaders(),
+  });
+  if (!response.ok) throw new Error('Failed to fetch movie details');
+  return await response.json();
+}
+
+export async function fetchWatchlist() {
+  const response = await fetch(`${BASE_URL}/watchlist`, {
+    headers: getHeaders(),
+  });
+  if (!response.ok) throw new Error('Failed to fetch watchlist');
+  return await response.json();
+}
+
+export async function addToWatchlist(movieId) {
+  const response = await fetch(`${BASE_URL}/watchlist`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify({ movieId }),
+  });
+  if (!response.ok) throw new Error('Failed to add to watchlist');
+  return await response.json();
+}
+
+export async function removeFromWatchlist(movieId) {
+  const response = await fetch(`${BASE_URL}/watchlist/${movieId}`, {
+    method: 'DELETE',
+    headers: getHeaders(),
+  });
+  if (!response.ok) throw new Error('Failed to remove from watchlist');
+  return true;
+}

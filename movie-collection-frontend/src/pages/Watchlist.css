@@ -1,0 +1,45 @@
+.watchlist-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.watchlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.watchlist-header h1 {
+  font-size: 2.25rem;
+  margin: 0;
+  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.watchlist-empty {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: rgba(25, 25, 35, 0.4);
+  border-radius: 1.5rem;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  margin-top: 2rem;
+}
+
+.watchlist-empty h2 {
+  font-size: 1.5rem;
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+}
+
+.watchlist-empty p {
+  color: #94a3b8;
+  margin-bottom: 2rem;
+}

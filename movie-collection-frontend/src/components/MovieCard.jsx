@@ -1,5 +1,6 @@
 import React from 'react';
 import { Star, Clock, Info } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import './MovieCard.css';
 
 export function MovieCard({ movie }) {
@@ -40,10 +41,10 @@ export function MovieCard({ movie }) {
         </p>
         
         <div className="card-actions">
-          <button className="btn-details">
+          <Link to={`/movies/${movie.id}`} className="btn-details" style={{ textDecoration: 'none', display: 'inline-flex' }}>
             <Info size={16} />
             More Details
-          </button>
+          </Link>
         </div>
       </div>
     </div>

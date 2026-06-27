@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, User, Film, LogOut } from 'lucide-react';
+import { Search, User, Film, LogOut, Bookmark } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './Header.css';
@@ -34,6 +34,10 @@ export function Header() {
         <nav className="nav-actions">
           {isAuthenticated ? (
             <>
+              <Link to="/watchlist" className="btn-secondary" style={{ textDecoration: 'none', display: 'flex', gap: '0.5rem', alignItems: 'center', marginRight: '1rem' }}>
+                <Bookmark size={18} />
+                Watchlist
+              </Link>
               <div className="user-profile">
                 <div className="avatar">
                   {user?.name?.charAt(0).toUpperCase() || 'U'}
